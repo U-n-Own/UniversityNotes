@@ -1,0 +1,234 @@
+{
+  "main": {
+    "id": "6ced83af819ba708",
+    "type": "split",
+    "children": [
+      {
+        "id": "f8b6db25ec759522",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5a2e7daa66a8a249",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "IntelligentSystemsForPatternRecognition/Lesson 1 - Time series and brief Fourier analysis.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "1858dc2046bbcb5b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "IntelligentSystemsForPatternRecognition/Midterms/First Midterm.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "786f4e98f8837a73",
+    "type": "split",
+    "children": [
+      {
+        "id": "8c167ef18fe6e4c2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "dff0d0d1f6f3bef5",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "f84191f38589f491",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "da72d09c6a56d8a1",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "right": {
+    "id": "678b2e183ec8f479",
+    "type": "split",
+    "children": [
+      {
+        "id": "1245d4292b8f8bfd",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "427715c8747e9073",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "IntelligentSystemsForPatternRecognition/Midterms/First Midterm.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "14bfa88f709141a3",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "IntelligentSystemsForPatternRecognition/Midterms/First Midterm.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "a3bd8cef9fd0c782",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "94d81d0eed53a955",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "IntelligentSystemsForPatternRecognition/Midterms/First Midterm.md"
+              }
+            }
+          },
+          {
+            "id": "7487ad1c2158c9b4",
+            "type": "leaf",
+            "state": {
+              "type": "code-execute-manage-executors",
+              "state": {}
+            }
+          },
+          {
+            "id": "ea94517d7479962d",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "obsidian-full-calendar:Open Full Calendar": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
+      "templater-obsidian:Templater": false
+    }
+  },
+  "active": "1858dc2046bbcb5b",
+  "lastOpenFiles": [
+    "IntelligentSystemsForPatternRecognition/Lesson 4 - Wavelets.md",
+    "IntelligentSystemsForPatternRecognition/Midterms/First Midterm.md",
+    "IntelligentSystemsForPatternRecognition/Lesson 1 - Time series and brief Fourier analysis.md",
+    "IntelligentSystemsForPatternRecognition/Lesson 2 - Images.md",
+    "IntelligentSystemsForPatternRecognition/Lesson 3 - Image processing II.md",
+    "IntelligentSystemsForPatternRecognition/Drawing 2023-03-03 14.58.08.excalidraw.md",
+    "IntelligentSystemsForPatternRecognition/Midterms",
+    "HumanLanguageTechnologies/Lesson 3 - Word Meaning.md",
+    "HumanLanguageTechnologies/Lesson 4 -.md",
+    "ParallelDistributedSystems/Lesson 3 - Native Threads.md",
+    "Untitled.md",
+    "spm.di.unipi.it.md",
+    "convolution.md",
+    "2023-03-01.md",
+    "Probability.md",
+    "ComputationalModelsForComplexSystems/Lesson 2 - Continuous Dynamicals Models.md",
+    "images/Pasted image 20230306153748.png",
+    "images/Pasted image 20230306152117.png",
+    "images/Pasted image 20230306151524.png",
+    "ComputationalModelsForComplexSystems/Lesson 1 - Discrete Dynamical Systems.md",
+    "IntelligentSystemsForPatternRecognition/Lesson 5 - Generative and Graphical Models.md",
+    "Excalidraw/Drawing 2023-03-04 12.07.38.excalidraw.md",
+    "images/Pasted Image 20230304120753_185.png",
+    "IntelligentSystemsForPatternRecognition/Lesson 6 - Conditional Independence and Causality.md",
+    "images/Pasted image 20230303154241.png",
+    "images/Pasted image 20230303153525.png",
+    "images/Pasted image 20230303152814.png",
+    "images/Pasted image 20230303152541.png",
+    "images/Pasted image 20230303152232.png",
+    "images/Pasted image 20230303151227.png",
+    "Templates/Core  Notes CMCS.md",
+    "Templates/Core Notes HLT.md",
+    "ComputationalModelsForComplexSystems",
+    "ParallelDistributedSystems/Untitled.canvas",
+    "Excalidraw/Drawing 2023-03-01 11.12.26.excalidraw.md",
+    "Excalidraw",
+    "Templates/Core Notes 1.md",
+    "Templates/Core Notes PDS.md",
+    "ParallelDistributedSystems",
+    "HumanLanguageTechnologies/Lesson 2 - Language Modeling.md",
+    "Templates/Core Notes ISPR.md",
+    "Dates",
+    "Templates",
+    "HumanLanguageTechnologies",
+    "Untitled.canvas",
+    "images",
+    "Lesson",
+    "IntelligentSystemsForPatternRecognition"
+  ]
+}
