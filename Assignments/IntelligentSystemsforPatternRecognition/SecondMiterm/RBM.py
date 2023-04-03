@@ -22,16 +22,6 @@ class RBM:
         self.visible_bias = np.zeros(num_visible)
         self.hidden_bias = np.zeros(num_hidden)
         
-        
-    def train(self, data):
-        # Train the RBM using the CD-1 algorithm
-        pass
-    
-    def inference(self, data):
-        # Perform inference on the RBM given the data
-        # Reconstructed data is returned
-        pass
-        
     def sigmoid(self, x):
         # Implement the sigmoid activation function
        return 1.0/(1.0 + np.exp(-x))
@@ -55,7 +45,7 @@ class RBM:
         return 1/num_steps * Q
     
     
-    def sample_hidden(self, visible, batch_size):
+    def sample_hidden(self, visible, batch_size=10):
         # Sample the hidden layer activations given the visible layer activations
         # Direct sampling
 
@@ -63,8 +53,7 @@ class RBM:
         prob_hidden = self.sigmoid(np.dot(visible, (self.weights)) + self.hidden_bias)
         
         # sample the hidden units given the probability
-        hidden = np.random.binomial(1, prob_hidden)
-        
+        #hidden = np.random.binomial(1, prob_hidden)
         
         return prob_hidden
      
@@ -77,13 +66,69 @@ class RBM:
         prob_visible = self.sigmoid(np.dot(hidden, np.transpose(self.weights)) + self.visible_bias)
         
         return prob_visible     
-    
+   
+   
+    def reconstruct(self, data, hidden, prob_visible):
+        # Reconstruct the data given the data
+        #A “reconstruction” is produced by setting each vi to 1 with a probability given by P(vi = 1|h) = σ(bi + ∑_j w_ij*h_j)
+
+        reconstructed_data = np.zeros(data.shape)
         
-    def contrastive_divergence_1(self, data, learning_rate, num_epochs, num_steps=1):
+        for i in range(data.shape[0]):
+            for j in range(data.shape[1]):
+                if data[i][j] == 0:
+                    reconstructed_data[i][j] = prob_visible[i][j]
+                else:
+                    reconstructed_data[i][j] = data[i][j]
+        
+        return reconstructed_data
+   
+   
+    def update(self, wake, dream, negative, positive, data, recon_data):
+        
+        reconstruction_error = np.sum((wake - dream)**2)
+
+        self.weights += self.learning_rate * (wake - dream)
+        self.visible_bias += self.learning_rate * (np.sum(positive, axis=0) - np.sum(negative, axis=0))
+        self.hidden_bias += self.learning_rate * (np.sum(data, axis=0) - np.sum(recon_data, axis=0))
+        
+        return reconstruction_error
+                
+    def contrastive_divergence_1(self, data, num_steps=1):
         # Implement the CD-1 algorithm to train the RBM
         
-        # Positive divergence
-
+        # Positive divergence 
+        positive_hi_prob = self.sample_hidden(visible=data)
+            
+        # transform in probabilities to fire the hidden units 1 or 0
+        # put at zero the probabilities that are less than 0.5
+        probs_hidden = np.array(positive_hi_prob)
+        
+        # extract an array of n_hidden from a binomial and put to 1 the probs corresponding if the prob is higher
+        hidden_units_sample = np.random.binomial(1, probs_hidden, size=probs_hidden.shape)
+                    
+        #for prob, sampled_hidden in zip(probs_hidden, hidden_units_sample):
+        activation_mask = probs_hidden >= hidden_units_sample
+        
+        for i, activated in enumerate(activation_mask):
+            probs_hidden[i][activated] = 1
+            probs_hidden[i][~activated] = 0
+        
+        #print("Positive hidden batch probabilities shape: ", probs_hidden)
+            
+        wake_phase = np.dot(data.T, probs_hidden)         
+        
         
         # Negative divergence
-        pass
+
+        recon_data_prob = self.sample_visible(hidden=probs_hidden)
+
+        #print("Reconstructed data shape: ", recon_data_prob.shape)
+        #print("Reconstructed data: ", recon_data_prob) 
+        
+        neg_hi_probs = self.sample_hidden(visible=recon_data_prob) 
+
+        dream = np.dot(recon_data_prob.T, neg_hi_probs)
+
+        
+        return wake_phase, dream, probs_hidden, recon_data_prob, neg_hi_probs
