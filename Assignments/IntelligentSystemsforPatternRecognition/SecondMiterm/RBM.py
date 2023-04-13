@@ -22,30 +22,39 @@ class RBM:
         # Initialize the model parameters (weights and biases)
         
         # Initialize matrix W from  a normal distribution with mean 0 and stddev sq
-        #self.weights = np.random.normal(mean = 0, stddev = np.sqrt(1.0/num_visible), size = (num_visible, num_hidden))
-        self.weights = np.random.uniform(low = -1, high = 1, size = (num_hidden, num_visible))
+        self.weights = np.random.normal(loc=0, scale=0.01, size=(num_hidden, num_visible))
+
+        # These are our b and c in the picture avaialble in the assignment document
         
-        # these are our b and c in the picture avaialble in the assignment document
+        # We should set the visible bias to log[pi/(1 − pi)] where pi is the proportion
+        # of training vectors in which unit i is on
         self.visible_bias = np.zeros(num_visible)
         self.hidden_bias = np.zeros(num_hidden)
+
+        self.epochs_error = np.array([])
+        self.error_history = np.array([])
         
+        self.epochs_error_list = []
+        self.epochs_history_list = []
+
     def sigmoid(self, x):
-        # Implement the sigmoid activation function
        return 1.0/(1.0 + np.exp(-x))
-   
-    def gibbs_sampling(self, num_steps, visible):
-        # Implement the gibbs sampling algorithm
-        # Used to approximate joint distribution of hidden and visible units
+    
+    def _gibbs_sampling(self, visible, num_steps=1):
+        """ 
+        TODO: 
+        Currently not used:
+            Implement the gibbs sampling algorithm
+            Used to approximate joint distribution of hidden and visible units
+
+        """ 
         
         # Q is a matrix of size (num_visible, num_hidden) 
         Q = np.zeros((self.num_visible, self.num_hidden))
         
         # repeat until convergence
         for i in range(num_steps):
-            # sample the hidden units given the visible units
-            hidden = self.sample_hidden(visible)
-            # sample the visible units given the hidden units
-            visible = self.sample_visible(hidden) 
+
             
             Q += np.outer(visible, np.transpose(hidden))
         
@@ -56,7 +65,7 @@ class RBM:
         # Sample the hidden layer activations given the visible layer : data
 
         # sigmoid(b+W^T*v)
-        prob_hidden = self.sigmoid(np.dot(visible, (self.weights).T) + self.hidden_bias)
+        prob_hidden = self.sigmoid(np.dot(visible, (self.weights)) + self.hidden_bias)
         
         return prob_hidden
      
@@ -65,76 +74,76 @@ class RBM:
         
         # calculate the probability of visible units given the hidden units
         
-        prob_visible = self.sigmoid(np.dot(hidden, (self.weights)) + self.visible_bias)
+        prob_visible = self.sigmoid(np.dot(hidden, (self.weights.T)) + self.visible_bias)
         
         return prob_visible     
-   
-   
-    def reconstruct(self, data, hidden, prob_visible):
-        # Reconstruct the data given the data
-        #A “reconstruction” is produced by setting each vi to 1 with a probability given by P(vi = 1|h) = σ(bi + ∑_j w_ij*h_j)
-
-        reconstructed_data = np.zeros(data.shape)
+    
+    def reconstruct_data(self, data):
         
-        for i in range(data.shape[0]):
-            for j in range(data.shape[1]):
-                if data[i][j] == 0:
-                    reconstructed_data[i][j] = prob_visible[i][j]
-                else:
-                    reconstructed_data[i][j] = data[i][j]
+        hidden = self.sigmoid(np.dot(data, (self.weights.T)) + self.hidden_bias)
         
-        return reconstructed_data
-   
+        recon_probs = self.sigmoid(hidden.dot(self.weights)+ self.visible_bias)
+        
+        return recon_probs
    
     def update(self, wake, dream, negative, positive, data, recon_data):
+        """
         
-        reconstruction_error = np.sum((wake - dream)**2)
+        Updates the weights and biases of the RBM model.
 
+        """
         self.weights += self.learning_rate * (wake - dream)
-        self.hidden_bias += self.learning_rate * (np.sum(positive, axis=0) - np.sum(negative, axis=0))
-        self.visible_bias += self.learning_rate * (np.sum(data, axis=0) - np.sum(recon_data, axis=0))
-        
-        return reconstruction_error
+        self.hidden_bias += self.learning_rate * (positive - negative)
+        self.visible_bias += self.learning_rate * (data-recon_data)
                 
     def contrastive_divergence_1(self, data, num_steps=1):
         """ 
         Implement the CD-1 algorithm to train the RBM
+        
+        returns: parameters for the next update
+        
         """ 
         
-        # Positive divergence : 
-        positive_hi_prob = self.sample_hidden(visible=data)
-            
-        # transform in probabilities to fire the hidden units 1 or 0
-        # put at zero the probabilities that are less than 0.5
+        # Positive divergence : gradient of the log-likelihood of the data given the model
+
+        # This is equation 7 in the Hinton paper
+        positive_hi_prob = self.sigmoid(np.dot(data, self.weights.T) + self.hidden_bias)
+                    
+        wake_phase = np.dot(positive_hi_prob.T, data)         
+        
         probs_hidden = np.array(positive_hi_prob)
         
-        wake_phase = np.dot(data.T, probs_hidden)         
+        # Sample the hidden layer activations given the visible layer
+        hidden_units_sample = (np.random.rand(*probs_hidden.shape) < probs_hidden).astype(float)
+        
+        
+        # Negative divergence : gradient of the log-likelihood of the model given the data
 
-        # extract an array of n_hidden from a binomial and put to 1 the probs corresponding if the prob is higher
-        hidden_units_sample = np.random.binomial(1, probs_hidden, size=probs_hidden.shape)
-                    
-        activation_mask = probs_hidden >= hidden_units_sample
+        # This is equation 8 in the Hinton paper
         
-        for i, activated in enumerate(activation_mask):
-            probs_hidden[i][activated] = 1
-            probs_hidden[i][~activated] = 0
+        # We're doing gibbs sampling here for 1 step, first by sampling binary visible units from positive probabilities
+        # In gibbs sampling we evaluate pv1: the probability of the visible units given the hidden units
         
+        # v1: the sample of the visible units given the hidden units.
+        # ph1: the probability of the hidden units given the visible units and finally, 
+        # h1: the sample of the hidden units given the visible units. The reconstruction is given by v1.
+        pv1 = self.sigmoid(np.dot(hidden_units_sample, self.weights) + self.visible_bias)
+        v1 = (np.random.rand(self.num_visible) < pv1).astype('float')
+        ph1 = self.sigmoid(np.dot(v1, self.weights.T) + self.hidden_bias)
+        h1 = (np.random.rand(self.num_hidden) < ph1).astype('float')
+            
+        # From Hinton paper: When the hidden units are being driven by data, always use stochastic binary states. When they are
+        # being driven by reconstructions, always use probabilities without sampling. 
+        # So the step to sample here is not needed
         
-        # Negative divergence
+        #dream = np.dot(recon_data_prob.T, neg_hi_probs)
+        dream = np.dot(h1.T, v1)
+            
+        reconstruction_error = np.sum((data - v1) ** 2)
 
-        recon_data_prob = self.sample_visible(hidden=probs_hidden)
-
-        reconstruction_sample = np.random.binomial(1, recon_data_prob, size=recon_data_prob.shape)
-        
-        activation_mask = recon_data_prob >= reconstruction_sample
-        
-        for i, activated in enumerate(activation_mask):
-            recon_data_prob[i][activated] = 1
-            recon_data_prob[i][~activated] = 0
-        
-        neg_hi_probs = self.sample_hidden(visible=recon_data_prob) 
-
-        dream = np.dot(recon_data_prob.T, neg_hi_probs)
-
-        
-        return wake_phase, dream, probs_hidden, recon_data_prob, neg_hi_probs
+        reshaped_v1= v1.reshape(self.num_visible,)
+        reshaped_data = data.reshape(self.num_visible,) 
+        reshaped_positive_hi_prob = positive_hi_prob.reshape(self.num_hidden,)
+        reshaped_h1 = h1.reshape(self.num_hidden,)
+            
+        return  wake_phase, dream, reconstruction_error, reshaped_v1, reshaped_data, reshaped_positive_hi_prob, reshaped_h1
