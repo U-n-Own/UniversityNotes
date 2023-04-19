@@ -4,4 +4,6 @@ This repo is used to store all my notes taken with [Obsidian](https://obsidian.m
 
 # Example of notes
 
-![Image_example](../UniversityNotes/pictures/notes_example.png)
+
+![](pictures/notes_example.png)
+
