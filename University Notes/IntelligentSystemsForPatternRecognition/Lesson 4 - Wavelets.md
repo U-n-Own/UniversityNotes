@@ -2,7 +2,7 @@ Date: [[2023-03-01]]
 
 Status: #notes
 
-Tags: [[Signal Processing]],[[IntelligentSystemsForPatternRecognition]]
+Tags: [[Signal Processing]],[[IntelligentSystemsForPatternRecognition]], [[A.I. Master Degree @Unipi]]
 
 # Limitations of DFT
 Since we can analyze signal in spectral domain or space domain, we take a signal

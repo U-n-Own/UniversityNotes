@@ -2,7 +2,7 @@ Date: [[2023-02-28]], [[2023-03-01]]
 
 Status: #notes
 
-Tags: [[Human Language Technologies]]
+Tags: [[Human Language Technologies]], [[A.I. Master Degree @Unipi]]
 
 # Words
 

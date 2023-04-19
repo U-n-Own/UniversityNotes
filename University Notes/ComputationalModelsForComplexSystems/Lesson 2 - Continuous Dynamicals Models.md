@@ -2,7 +2,7 @@ Date: [[2023-03-03]]
 
 Status: #notes
 
-Tags: [[Complex Systems]]
+Tags: [[Complex Systems]], [[A.I. Master Degree @Unipi]]
 
 # Ordinary Differential Equations 
 
@@ -160,6 +160,153 @@ In this case our methds can self determine $\tau$ or dynamically adjust it. Ther
 ![[Pasted image 20230303105456.png]]
 
 ![[Pasted image 20230303105512.png]]
+
+## Famous ODEs models
+
+In biology they appear usually, so it's better to know them. From now on we omit the $t$ in our equations so $X = X(t), \dot{X} = \dot{X}(t)$
+
+### Lotka-Volterra equations 
+
+Basically the prey-predator model and their interaction, we have mixel population of preys and predator and we analyze their behaviour over time, this has also been observed by *Lotka* as description of biochemical oscillator
+
+Volterra observed that in Adriatic sea after WW1
+
+- Ecologist observed an increase of population of some species of fish, and other species of fish were in lower number. The main consequence was the harvest of fish in the sea during the war. There was a link between these species, the **key idea** is if we have two population of preys and predator, if you reduce the number of predator, preys proliferate.
+
+Describe population *density* with two variables $V$ preys, $P$ predators, 
+
+
+$$
+\dot{V} = rV \; exponential \; growth
+$$
+$$\dot{P} = -sP \; decay \; exp$$
+
+So predators *hunts* prey and frequency of predation is related to the $P(find\;prey)$ so the rate of predation is proportional to both $P,V$. We use a coefficient $a$ that models the meeting results in an hunting (Probability to prey). Now we have to take into account derivative describing the frequency of something, rather than probabilities. But we can use similarly probability as frequencies as word in this context. Moreover once we consider the fact that predator can survive and reproduce, so denoting $b$ (rate of predation) the number of offsprings produced for each hunting, so more predator predate more they reproduce.
+
+So now we can update our model with these rates.
+![[Pasted image 20230309114636.png]]
+Predator not only dies, but also reproduce, $aVP$ is called ***Hunting rate*** and $abVP$ ***Hunting-Reproduction rate***. We introduce non-linear terms that describe interaction between population.
+
+### Playing with the model
+![[Pasted image 20230309115056.png]]
+
+Compute equilibrium is easy, we set the derivative to $0$. And we get two solution $V=0, P=0$ and $V = 1000, P=1000$.
+What happens if we perturbate the number with different values? $V,P = 900$.
+
+As we can see they start to grow togheter, than go over the equilibrium point and then preys start to decrease and predators follow them! 
+![[Pasted image 20230309115437.png]]
+
+Lotka observed chemical systems and observed oscillation, then he traslated the chemical reaction into differential equation that gave the same behaviour to this prey system.
+These model has been used to describe markets (buyers and sellers), social system...
+
+Let's use the solver for small values. We have a very fast increase in preys, followed by fast increase in predators. We get strong oscillations, if you add more details to the model complexity will grow and we lose track of which we want to consider. If with a simple model we can find a reasonable behaviour we can approximately say that these simplistic model work and have good properties. If we work with data we need a lot of data of all possible cases, in our case we want to formulate a function that descrine the system in the more simple way that approach it.
+![[Pasted image 20230309115843.png]]
+
+
+### Sir model
+
+Used to model epidemic phenomena or their spread, we split the population in three parts
+
+*Sir* stands for:
+
+- ***Susceptible***: those who can get the disease.
+- ***Infected***: those who have currently the disease, these can infect
+- ***Recovered***: those who have recovered and cannot be infected anymore, also cannot infect
+
+These model are often used to study spread of information in social networks. Our three variables $S,I,R$, describe ratios of each class of individual in the population.
+
+**Assumptions**: Sum of $S,I,R$ is *normalized* to $1$. We don't have migrations, deaths, horizontal trasmission, one individual can infect 1 individual, (not graph like spread), Contacts are random (considering big population the interaction isn't random). People in one city cannot have contacts with other city, but we're doing assumption. After infection we can't infect anymore.
+
+This is our initial model:
+![[Pasted image 20230309122241.png]]
+
+$\beta$ is the infection coefficient, everytime some $S$ being infected they became $I$ with this factor. $\gamma$ is the recovery coefficient, that describe tha rate of recovery of each infected, where $\frac{1}{\gamma}$ is the *time* that one indivisual have to recover. Basically is a frequency of recovery. $\beta SI$ is **Frequency of infection**, $\gamma I$ is **Frequency of recovery**, if the derivative is a constant we have a costant change. Multiplying by the value of the derivative. For example if $I$ increased at the previous step the growth of it becomes exponential!
+
+Overve that $S$ can only decrease and $R$ only increase, but the dynamics of $I$ tells us if the disease is spreading or not, if $I$ increase there are more contagious than recovery so there is a great spread, instead if $I$ decreases we're seeing our population recovering basically. This is the case in *COVID-19* where we calculated the $r_0$ that essentially consist in $\frac{\beta}{\gamma}$.
+
+Let's see how the model behaviours.
+![[Pasted image 20230309123703.png]]
+
+## Modeling influenza spread
+
+Every winter we have a spread of influenza, we have some knowledge about flu, we're sick for a certain period of time of circa 8 days.
+Our $\gamma = \frac{1}{8}$, or we can say that every week $12,5\%$ of population (infected) recover. A person with flu spread to $\frac{1}{5}$ of the persons that have contact with. And the epidemics last 120 days. 
+
+Let's see with this numbers how the model solve the problem
+![[Pasted image 20230309124244.png]]
+
+$65\%$ gets disease with peak of infection at month 2 circa.
+
+Usually these models are used to study how vaccines works and their effect. To do this we need to extend the model with some coefficients.
+
+#### Adding birth and deaths
+
+**Assumptions**: For sake of simplicity we want that population size be constant over time so birth and death in 10 years do not change so much, no vertical trasmission, newborns are susceptible.
+
+$$N= S+I+R = 1 \; where \; \dot{N} =\mu -\mu N $$
+
+We want to add a $\mu$ that is the growth rate of susceptible population and a negative term
+
+Extended model
+![[Pasted image 20230309124912.png]]
+
+Now we have different cases for values of
+
+1. $\frac{\beta}{\mu + \gamma} \lt 1$
+2. $\frac{\beta}{\mu + \gamma} \gt 1$
+
+
+
+**First**
+![[Pasted image 20230309125047.png]]
+
+**Second**
+![[Pasted image 20230309125126.png]]
+
+
+What happens when we vaccinate? 
+
+We want further extend the model
+
+#### Adding vaccinations
+
+**Assumption**: We vaccinate newborns, not random people, we vaccinate a certain number of them. Let's call it $p$ these are in recovered state from the birth basically
+![[Pasted image 20230309125531.png]]
+
+Let's run some simulation with small number of $p = 0.1$
+![[Pasted image 20230309125603.png]]
+
+With $p = 0.5$
+![[Pasted image 20230309125627.png]]
+
+So if we vaccinate the half of newborn we can eradicate the disease!
+
+We can compute analytically a certain threshold of vaccination to eradicate.
+
+$$
+p_{c} = 1 - \frac{\mu + \gamma}{\beta}
+$$
+
+Let's consider real disease like **Measles** (morbillo).
+![[Pasted image 20230309125846.png]]
+
+So for eradicate morbillo, we need to vaccinate $95\%$ newborns, so it's mandatory now to get vaccinated for example.
+Spread of information follow a very similar model.
+
+Next time we will see how stochastic models works, because some system in same initial state can change a lot because of stochastic nature of those systems.
+
+
+```ad-todo
+Consider what happens in the Lotka-Volterra model by adding vegetations.
+
+
+Extend influenza model with vaccination
+
+```
+
+
+Lotka volterra phase portrait done myself: 100k steps eta
+![[Pasted image 20230331175820.png]]
 
 >[!info]
 > 

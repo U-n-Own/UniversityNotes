@@ -2,7 +2,7 @@
 
 Status: #notes 
 
-Tags: [[Ispr]], [[Time Series]], [[Signal Processing]], [[Probability]]
+Tags: [[Ispr]], [[Time Series]], [[Signal Processing]], [[Probability]], [[A.I. Master Degree @Unipi]]
 
 
 Slides from professor of this lesson can be found [here](https://elearning.di.unipi.it/pluginfile.php/54174/mod_resource/content/3/ISPR_2_timeseries.pdf)
@@ -67,7 +67,7 @@ $$
 $$
 
 [Autocorrelogram]
-![[Pasted image 20230226160052.png]]
+![[IntelligentSystemsForPatternRecognition/images/Pasted image 20230226160052.png]]
 
 If two points are higly correlated, they are close to each other. Autocorrelation gives us a picture of the signal is repeating itself. If we evaluate the autocorrelation at certain lags $\tau_i$ we can get an autocorrelation plot. These will tells us the strong periodicity of the signal. Near the zero we have the trivial case, the autocorrelation is 1.
 

@@ -2,7 +2,7 @@ Date: [[2023-03-02]]
 
 Status: #notes
 
-Tags: [[IntelligentSystemsForPatternRecognition]], [[Probability]]
+Tags: [[IntelligentSystemsForPatternRecognition]], [[Probability]],[[A.I. Master Degree @Unipi]]
 
 # Graphical Models or Generative
 
@@ -76,14 +76,19 @@ The $\color{red}{first \; term}$ in the second part is the *likelyhood* so how m
 A practical application of marginalization over all possible hypotesis is to rewite bayes like this
 ![[Pasted image 20230302154036.png]]
 
+#### XKCD on Bayes 
+
+![[Pasted image 20230419154151.png]]
+
 
 ### Independance and Conditional Independance
 
-Two RV, $X,Y$ are independant if 
+Two RV, $X,Y$ are independant if $P(X | Y) = \frac{P(X \cap Y)}{P(Y)} = P(X)$ and this is true if and only if $P(X \cap Y)  = P(X)P(Y)$
 
-**Conditional** : If we know things about a third variable
-eg: I pick up umbrella : X, i pick up sunglasses: Y, then i've an observation : it's raining.
+**Conditional Independance** : If we know things about a third variable!
+eg: I pick up umbrella : $X$, i pick up sunglasses: $Y$, then i've an observation : it's raining.
 Knowing that is raining make them independant, instead before they weren't! Thing become independant if we know the right things. 
+
 ![[Pasted image 20230302154217.png]]
 
 ## Inference and Learning probabilistic models
@@ -93,8 +98,8 @@ Knowing that is raining make them independant, instead before they weren't! Thin
 Usually we have an hypotesis $h_\theta$. How do we do inference? How do we infer the values of $X$ given $d$?
 ![[Pasted image 20230302154851.png]]
 
-The first after the sum is the prediction given the hypotesis, term number 2 is weighting the prediction given the posterior, then what we do the better the model is in according to posterior the way we fix the weightning will decrease... 
-This is called Bayesian Prediction, the is a theorem about this that says that nothing can beat a Bayesian predictor. But we cannot we go trough all the possible instantiation, this is not feasible, so we pick up the best hypotesis, but what is the best? The one that has the better posterior, the **Maximum a Posteriori Hypotesis** (we pick the best $P(h_i|d)$) and then we take a decision based only on that.
+The first term after the sum is the prediction given the hypotesis, term number 2 is weighting the prediction given the posterior, then what we do is: the better the model is in according to posterior the way we fix the weightning will decrease... (until convergence)
+This is called Bayesian Prediction, there is a theorem about this that says that nothing can beat a Bayesian predictor. But we cannot we go trough all the possible instantiation, this is not feasible, so we pick up the best hypotesis, but what is the best? The one that has the better posterior, the **Maximum a Posteriori Hypotesis** (we pick the best $P(h_i|d)$) and then we take a decision based only on that.
 
 Thanks to the Bayes rule we can get $P(d|h)$ if we know the other one, the best we picked before. If all hypoteses are a priori all the same probability we're intrested in the **Maximum likelyhood hypotesis** so rather than the posterior we want to maximize the likelyhood. This is the maximum likelyhood estimator. Usually parameters are obtained by ML estimate. The presence of the prior influences what we use, because it's effect will be useful for Maximum a posteriori, but the prior is good only if we have few data, otherwise our prior on that collection of samples will be much less important. 
 

@@ -1,8 +1,7 @@
 Date: [[2023-02-27]]
 
 Status: #notes
-
-Tags: [[Human Language Technologies]], [[Probability]] 
+Tags: [[Human Language Technologies]], [[Probability]], [[A.I. Master Degree @Unipi]].
 
 [Slides](https://docs.google.com/presentation/d/16cUPpKlCXK9QKfgIzfkcZcLNX_dt8__2/edit#slide=id.p4)
 

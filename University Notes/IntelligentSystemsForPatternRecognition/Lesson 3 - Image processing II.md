@@ -2,7 +2,7 @@ Date: [[2023-03-01]]
 
 Status: #notes
 
-Tags: [[Image Processing]], [[Detectors]], [[Descriptors]]
+Tags: [[Image Processing]], [[Detectors]], [[Descriptors]], [[A.I. Master Degree @Unipi]]
 
 # Detectors
 
