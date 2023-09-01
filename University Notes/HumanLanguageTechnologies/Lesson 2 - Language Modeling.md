@@ -144,7 +144,37 @@ Principle of **least effort** both speaker and hearer in communication want to m
 
 Zipf's law is a compromise between the two
 
+### Coding zipfs law
 
+Implementation works but not here
+
+```run-python
+import nltk
+import matplotlib.pyplot as plt
+from collections import Counter
+
+nltk.download('brown')
+from nltk.corpus import brown
+
+tokens = brown.words()
+
+token_counts = Counter(tokens)
+sorted_tokens = token_counts.most_common()
+
+
+
+ranks = list(range(1, len(sorted_tokens)+1))
+frequencies = [count for token, count in sorted_tokens]
+
+plt.scatter(ranks, frequencies)
+plt.xscale('log')
+plt.yscale('log')
+plt.xlabel('Rank')
+plt.ylabel('Frequency')
+plt.title("Zipf's law in the Brown Corpus")
+plt.show()
+
+```
 
 ```ad-question
 
@@ -170,8 +200,8 @@ What we expect is that more vocabulary there are, higher will be perplexity.
 What if we have words unknown in the test that we don't had in training set? Common solution is to introduce a special token: <UNK>, so we choose a vocabulary in advance and replace words that aren't there with the token and then we train.
 
 
+- - -
 
----
 # References
 
 Code at lesson [here](https://medialab.di.unipi.it:8000/user/v.gargano1@studenti.unipi.it/lab/tree/HLT/Lectures/LanguageModel.ipynb)

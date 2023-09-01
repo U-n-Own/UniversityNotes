@@ -123,7 +123,7 @@ A very simple model, basically a linear hyperplane separating data, for binary c
 This model recalling the [[Machine Learning]] course, is the first model proposed by **McCulloch-Pits***
 ![[Pasted image 20230308144327.png]]
 
-Then we had the **Rosemblatt Perceptron** inspired by neuroscience studies and ideas
+Then we had the **Rosemblatt Perceptron** inspired by [[Neuroscience]] studies and ideas
 ![[Pasted image 20230308144550.png]]
 
 And then we can have multiple layer of Perceptrons that are now the Neural Networks

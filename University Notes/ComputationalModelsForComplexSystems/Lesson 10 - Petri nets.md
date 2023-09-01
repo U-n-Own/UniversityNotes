@@ -176,13 +176,6 @@ Still if we can decide, or compute in polynomial time the place invariance, spoi
 
 We're intrested in infinite tokens production they're bad, if we can find an invariant in a place, then for sure that place will be bounded!
 
-![[Pasted image 20230416172521.png]]
-
-
->[!info]
-> 
-
-
 
 
 
