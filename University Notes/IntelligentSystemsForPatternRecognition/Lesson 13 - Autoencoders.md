@@ -54,12 +54,14 @@ Assuming that hidden activation are distributed like a Laplacian distribution.
 Our $\hat{x}$ is a noisy version of $x$, so just applying some gaussian noise to our $x$, so basically we take the data, add noise.
 
 If we loop this way what happen? We start to sample from dataset, sample a noise add them and feed to the autoencoder and ask the autoencoder to return the unnoised one, everytime we do this we add different noise, then we will pickup another sample already seen at second epoch, but this time we have a different noise on the data, so we can say that we're stochastically working on the data, we're not learning $x$, but we're working to learn some representation of our data.
+
 ![[Pasted image 20230329163632.png]]
 
 
 ### Another intrepretation by probability
 
 What the autoencoder learnt is to denoise our samples, if we add deterministically noise we can learn to denoise. This is basically learning a distribution, a denoising distribution. These are like probabilistic autoencoders! We can think to this like how diffusion models work.
+
 ![[Pasted image 20230329164038.png]]
 
 ## DAEs as Manifold Learning
@@ -67,16 +69,16 @@ What the autoencoder learnt is to denoise our samples, if we add deterministical
 When we try to learn representation we're doing some assumption the main one is the
 
 ```ad-important
-Manifold Assumption: Our data, how much complex, high dimensional they are won't occupy even a little bit of the total space!
+Manifold Assumption: Our data, how much complex, high dimensional they are, won't occupy even a little bit of the total space!
 ```
 
-Most of the time assigning values to a pixel randomly gives us only white noise, the space of images is a very small subset, these are called ***Manifolds*** lower dimensional set embedded in high dimensional space, so moving in a certain direction gets us white noise but moving in good direction gives us images that are
+Most of the time assigning values to a pixel randomly gives us only white noise, the space of images is a very small subset, these are called ***Manifolds*** lower dimensional set embedded in high dimensional space, so moving in a certain direction gets us white noise but moving in good direction gives us images that are intresting.
 
-Locally these looks euclidean, instead globally these spaces are not euclidean (manifolds). That's what we want autoencoder to learn! TO move on variation of data that are meaningful, so only the direction that make us stay in the manifold generates compliant data, for example take the MNIST, if we go along that line we find 1s and if we get away we get more noisy pictures, for example, if we have our data $x_i$ where we can find $\hat{x_i}$? Well at least out of our manifold, so what we're learning is to bring our *noisyied* version of the data to get as fast as possible toward the original $x$, how do we do it? By going on the green line.
+Locally these looks euclidean, instead globally these spaces are not euclidean (manifolds). That's what we want autoencoder to learn! To move on variation of data that are meaningful, so only the direction that make us stay in the manifold generates compliant data, for example take the MNIST, if we go along that line we find 1s and if we get away we get more noisy pictures, for example, if we have our data $x_i$ where we can find $\hat{x_i}$? Well at least out of our manifold, so what we're learning is to bring our *noisyied* version of the data to get as fast as possible toward the original $x$, how do we do it? By going on the green line.
 
 So what we do with autoencoders is to a lot of different version of noisy data, and bringing it back by following green arrow, the green arrow are like *force fields*, bringing the particles to stable points, so we learn to approximate the score (Score matching aka Gradient of the log of the likelihood), the degree of proprotionality will be how much we sampled.
 
-$g(h) - x$ is the difference between the noise and our original data, take an input and a random vector, the autoencoder will recreate an exact digit on the manifold by iterating process. This is basically sampling process, this is at the basis of diffusion models, GANs and other thing. So by start from white noise we train a neural network to do this, learning the vector field. So if we sample some random noise we will get a proper data, but with diffusion models we can target what data we want to reach. 
+$g(h) - x$ is the difference between the noise and our original data, take an input and a random vector, the autoencoder will recreate an exact digit on the manifold by iterating process. This is basically sampling process, this is at the basis of diffusion models, GANs and other thing. So by start from white noise we train a neural network to do this, learning the vector field. So if we sample some random noise we will get a proper data, but with [[Lesson 23 - Generative III - Diffusion Models]] we can target what data we want to reach. 
 
 ![[Pasted image 20230329164243.png]]
 
@@ -84,12 +86,11 @@ $g(h) - x$ is the difference between the noise and our original data, take an in
 
 ![[Pasted image 20230329170244.png]]
 
-Assuming our data lives on these manifold we moving on a single direction can change how the number is rotated maybe, or maybe another direction on our manifold is
+Assuming our data lives on these manifolds we're moving on a single direction can change how the number is rotated maybe, or maybe another direction on our manifold is the shrinking. 
 
-Disentangled representation are very hard to learn, if we change a single direction maybe from a 4 we're shrinking, rotation and becomes similar to a 6 for example. So disentangling the direction is surely useful because maybe going in a single direction make changes in only one thing in our image.
+[[Disentangled Representations]] are very hard to learn, if we change a single direction maybe from a 4 we're shrinking, rotation and becomes similar to a 6 for example. So disentangling the direction is surely useful because maybe going in a single direction make changes in only one thing in our image.
 
-We're desperately taken these noisy thing and find a way to encode them in a neural activation hopin that neurons capture the manifold structure, manifold does this explicitly, other models build implicitly on this assumption
-
+We're desperately taken these noisy thing and find a way to encode them in a neural activation hoping that neurons capture the manifold structure, manifold does this explicitly, other models build implicitly on this assumption
 
 ## Contractive autoencoder
 
@@ -97,6 +98,7 @@ Another approach similar to sparse autoencoder.
 
 The whole autoencoder can penalize in output, but infinitesimal variation in $x$ have not to produce big variation in $f(x)$.
 This is connected to denoised autoencoder and what is actually doing.
+
 ![[Pasted image 20230329172657.png]]
 
 ## Stacking deep autoencoders
@@ -107,7 +109,8 @@ First big deep network were autoencoders, for example we have our $h_4$ disentan
 
 ## Unsupervised layerwise pretraining
 
-For autoencoders we want to build them deep, at the time backpropagate trough many layers we do a clever trick, we learn the first layer then we use the weights of the learnt architecture and so on
+For autoencoders we want to build them deep, at the time backpropagate trough many layers we do a clever trick, we learn the first layer then we use the weights of the learnt architecture we fix them so we don't need to backpropagate and we go for the next.
+
 ![[Pasted image 20230329173914.png]]
 
 ![[Pasted image 20230329173928.png]]

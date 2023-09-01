@@ -131,6 +131,11 @@ If i'm in a Bayesian network i don't care about the other that aren't in the mar
 We need to provide initial values for model parameter, assignment of topic to the words and so on, at each iteration we pick a random variable we change it $z_{ij}$ assignment of a specific topic to a specific word is drawn from the previous distribution. Then you can use the new $z$ to approximate the new $\theta$ and then the same for $\beta$. Is not that different from EM, istead of compute expectation we compute samples, but we can get as good as we like just iterating more.
 
 We're generating incrementally $\beta ,\theta$ trought sampling and actually do learning by sampling.
+
+In order:
+- $z_{ij}$ topic assignment for the j-th word in i-th document : Which topic the word belongs to
+- $\theta{i}$ topic distribution for the i-th document following dirchilet distribution
+- $\beta{ij}$ is the word distribution word the j-th word in the i-th topic 
 ![[Pasted image 20230321121958.png]]
 
 To get a valid sampling procedure we want to be careful, so we want to get the $q$ right, in a form that will get a good estimate. 

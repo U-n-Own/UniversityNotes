@@ -29,9 +29,11 @@ Let's decompose how CNN works, dissecting in it's components. We are going to se
 CNN aren't born in 2012, also neither before in 1944. The idea of this architecture comes from this ***Neocognitron***, from a Japanese professor. This guy read paper from those who won nobel prize for study of visual cortex on model of neuron, he tried to put it in how the brain process it: these cells simple and complex detect different features.
 - Simples : edges, blobs etc...
 - Complex: receive input from simples and combine them and respond to certain edges, this responds to all the edges, this is a convolution + pooling operation. This was trained by unsupervsed learning, at the time there wasn't backprop and these are really a lot of layers. Going from simple to complex was a hierarchical work and was even repeated by extracting incrementally abstract representation of our informations.
+
 ![[Pasted image 20230323143839.png]]
 
 ### First CNN for sequences
+
 ![[Pasted image 20230323144326.png]]
 
 These 15 time steps are taken by 1-dimensional convolution, after that we have a shrink and another convolution until we get a very simplified version and spit out the output, this was trained by backprop + parameter sharing.
@@ -45,6 +47,7 @@ This was one of the first CNNs by Yan-LeCun, this was inspired by complex and si
 
 ### Bio inspired model HMAX
 ![[Pasted image 20230323144823.png]]
+
 This was a model builded on a complex-simple cells constructing detector of features, these was bioinspired by a certain points with a central idea using SVMs. There were a lot of layer so backpropagating was really difficult.
 
 
@@ -85,11 +88,13 @@ But we don't want to lose information when convolving, so we can do something ca
 ![[Pasted image 20230323150604.png]]
 
 What are we really doing? A linear operation and we are working with neural nets, so we need a non-linearity, the effect of adding non linearity added pointwise is that, typical thing used is ReLU. Or it's variations.
+
 ![[Pasted image 20230323150701.png]]
 
 ### Pooling
 
 The first part of a CNN is *Convolution*, now we talk about the other type of neurons. The Pooling one, after we apply a convolution we apply a "pooling". To make robust our model to some transformation the idea of pooling is to get to know the same features with slighly different manifestations. The subsampling that is done by pooling give a more abstract representation, at low levels we are responsive to low level feature (edges) at higher level we want to make model respondent to object (made of feature like different edges). Making our image more smaller is a certain feature, this happen only if the feature fell into the entire convolutional filter. So a way to speeding up the operation to recognize, another way is striding but that make you use parameters while pooling has not parameters.
+
 ![[Pasted image 20230323152328.png]]
 
 Usually the pooling we use is MaxPooling, taking the max between the four subparts. The maxpooling operate over a slice, if we have more slice we can operate maxpooling over channels. 
@@ -121,6 +126,7 @@ The resulting dimension on these images using filter $K\times K \times D_1$
 ![[Pasted image 20230323153738.png]]
 
 ### Final note on convolution
+
 ![[Pasted image 20230323154108.png]]
 
 This usually what convolution is implemented, this is more like cross-correlation and not convolution.
@@ -129,7 +135,7 @@ This usually what convolution is implemented, this is more like cross-correlatio
 
 ## CNNs as sparse NN
 
-Let's say we have a certain number of conv neurons, if we're in the part $x_2,x_3,x_3$, first thing that is a sparse perceptron neuron getting input from 3 different neurons, this has another intresting effect: *weight sharing*!
+Let's say we have a certain number of conv neurons, if we're in the part $x_2,x_3,x_4$, first thing that is a sparse perceptron neuron getting input from 3 different neurons, this has another intresting effect: *weight sharing*!
 
 Sparsifing connectivity in our network and sharing weights is the key of CNNs!
 
@@ -168,7 +174,7 @@ We can see more than 1 $w_{0,0}$ but creating this matrix is really a waste beca
 
 ## Deconvolution (Transposed convolution)
 
-A way to go back from convolution, idea is simple: call $A$ the blue thing and $B$ the green, $A$ is the original image, what we see at right in green is the convolution. So we want to go from $2\times2$ image, how do we do? Use anothe kernel $3\times3$ and adding some padding.
+A way to go back from convolution, idea is simple: call $\color{blue}{A}$ the blue thing and $\color{green}B$ the green, $A$ is the original image, what we see at right in green is the convolution. So we want to go from $2\times2$ image, how do we do? Use anothe kernel $3\times3$ and adding some padding.
 So deconvolution is just another convolution. The kernel use for deconvolve is different from that we use to convolve, so we have convolution and deconvolution layer, with different parameters.
 
 This is an example with zero padding
@@ -224,6 +230,7 @@ The 1x1 convolution are shrinking the channel by one flattened image, that will 
 What's this technique?
 The original intuition is that if you're training with minibatches is to pick certain number of samples compute all these and then update gradient, change parameter then take another minibatch, what if between two batches the parameters change? The distribution of activation of neurons depends on the neurons on the layer afterwards. Distribution activation in layer $l$ are a certain distribution $D_l$ a distribution in the layer $l+1$ instead can have a different distribution $D_{l+1}$ this can create issues, can converge later. Would take more and more steps
 ![[Pasted image 20230328120327.png]]
+
 What we do is substract the mean and divide by variance of the minibatch just computed, but we cannot impose normalization without allowing the network to cancel what we've done the trick is to do the scale and shift, $\gamma$ cancels out the effect of the standard deviation and $\beta$ remove...
 $\gamma$ and $\beta$ are ours parameters that will change trough backpropagation. These are used to counteract *covariate shift*.
 
@@ -234,14 +241,22 @@ With ResNet we get 152 whopping layers, how gradients survives? The skipping con
 After the jump we pass over the original input at the start, so that we focus on what was different on the input. 
 ![[Pasted image 20230328122250.png]]
 
-What we do basically on this is just use the input and sum it with the convolution, composing $F(X) + X$, when backpropagating the gradient can flow (for example for the identity function we have backprop 1 in the residuals). What that block do is to compute the residual from the convoluted and the passed input stuff. This is connected with Dynamical Systems these are a certain type of dynamica system, these connectivity are non-dissipative and don't degenerate information. This helps a lot with gradient flow to help make it don't die.
+What we do basically on this is just use the input and sum it with the convolution, composing $F(X) + X$, when backpropagating the gradient can flow (for example for the identity function we have backprop 1 in the residuals). What that block do is to compute the residual from the convoluted and the passed input stuff. 
+
 ![[Pasted image 20230328122556.png]]
+
+## Dynamical System view of ResNets
+
+This is connected with [[Dynamical Systems]], these [[Residual Connections]] are a certain type of dynamical system, these connectivity are non-dissipative and don't degenerate information. This helps a lot with gradient flow to help make it don't die. For more on see [this paper](https://arxiv.org/abs/1710.10348) that talks about it.
+
+![[Pasted image 20230622111832.png]]
 
 ## MobileNets
 
 Low powered device like mobile phones, and since there are too many multiplication.
 
 Here we have $D_{K}\times D_K$ filters for $N$ where is the size of original image, what we can do is separate depthwise multiplication from spatial multiplication by using the same trick google used by multiplying with 1x1 filters, to simplify stuff.
+
 ![[Pasted image 20230328123020.png]]
 
 
@@ -252,6 +267,7 @@ Here we have $D_{K}\times D_K$ filters for $N$ where is the size of original ima
 ### What can we do with CNN
 
 What representation CNN are learning, we're projecting our high dimensional fitler generation in two dimension in another image to understand what the neural network learnt. So from final layer to two dimension eg:
+
 ![[Pasted image 20230328123723.png]]
 
 What for intermediate layers? (Hidden)
@@ -260,6 +276,7 @@ Visualize kernel weights, filters using naive approach that work only for first 
 Or we can *map the activation of the convolutional kernel back in pixel space*, so deconvolving. We can also see how a filters responds.
 
 ### Deconvolve nets
+
 ![[Pasted image 20230328123955.png]]
 We can deconvolve a specific layer, just attach from that layer to the specular layer and apply the chain of deconvolution to the original place and see what we get!
 
@@ -282,6 +299,7 @@ Layer 3
 ### Occlusions
 
 We can see how higly respondant are on certain part of images the neurons.
+
 ![[Pasted image 20230328124814.png]]
 
 

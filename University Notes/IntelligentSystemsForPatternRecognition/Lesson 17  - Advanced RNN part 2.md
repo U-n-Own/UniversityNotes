@@ -4,6 +4,30 @@ Status: #notes
 
 Tags: #ispr[[A.I. Master Degree @Unipi]]
 
+- [[#Skipping state update mitigate vanishing gradients|Skipping state update mitigate vanishing gradients]]
+- [[#Vanishing gradient depends on the shallowness|Vanishing gradient depends on the shallowness]]
+- [[#Hierarchical RNNs|Hierarchical RNNs]]
+	- [[#Hierarchical RNNs#Regulariation : Zoneout|Regulariation : Zoneout]]
+- [[#Clockwork networks|Clockwork networks]]
+- [[#Skip RNNs|Skip RNNs]]
+	- [[#Skip RNNs#Skip models on MNIST|Skip models on MNIST]]
+- [[#Making network efficient by exploiting hierarchical structure|Making network efficient by exploiting hierarchical structure]]
+	- [[#Making network efficient by exploiting hierarchical structure#Recap : 1|Recap : 1]]
+	- [[#Making network efficient by exploiting hierarchical structure#Recap : 2|Recap : 2]]
+	- [[#Making network efficient by exploiting hierarchical structure#Basics of RNN and memory|Basics of RNN and memory]]
+- [[#Memory networks|Memory networks]]
+- [[#End to end memory networks|End to end memory networks]]
+- [[#Extension to the memory networks|Extension to the memory networks]]
+- [[#Memory nets for visual QA with attention|Memory nets for visual QA with attention]]
+- [[#Neural Turing Machines|Neural Turing Machines]]
+	- [[#Neural Turing Machines#Neural controller|Neural controller]]
+	- [[#Neural Turing Machines#Memory read|Memory read]]
+	- [[#Neural Turing Machines#Memory write|Memory write]]
+- [[#NTM Attention focusing|NTM Attention focusing]]
+- [[#Practical uses:|Practical uses:]]
+	- [[#Practical uses:#Take home lesson|Take home lesson]]
+
+
 # Optimizing memory: Neural reasoners 
 
 Let's start with hirarchical and multiscale Recurrent Networks, like a working memory for next predictions, we talked about gated RNN claiming they can solve a problem in long term dependancies and vanishing gradients, learning to solve complex tasks that require storage and recall of information is not achievable.
@@ -12,9 +36,11 @@ Some architectures that capture long range sequences
 
 ## Skipping state update mitigate vanishing gradients
 
-For a error at $h_3$ we need to backprop from there to the beginning for each time step (for which we update states). What happens if we don't update the state? Basically we're doing a skip trough connection, we can go from $h_0$ to $h_3$ for example, backpropagating with less vanish. Not updating all the states. How can we skip updates?
+For a error at $h_3$ we need to backprop from there to the beginning for each time step (for which we update states). What happens if we don't update the state? Basically we're doing a skip trough connection, we can go from $h_0$ to $h_3$ for example, backpropagating with less vanish. Not updating all the states.
 
-We add skip connection from a certain unit $A$ to a far unit not the next one for example. (Residual connection)
+How can we skip updates?
+- We add skip connection from a certain unit $A$ to a far unit not the next one for example. (Residual connection)
+
 ![[Pasted image 20230414142217.png]]
 
 Other solutions are to insert inside the architecture : not using recurrence, but using convolutions. The first CNN was used on time series, so we have a seq-to-seqence model
@@ -35,7 +61,7 @@ So we have
 
 Additionally, self-attention is also highly parallelizable, as the attention scores can be computed independently for each element in the sequence. 
 
-- **Recurrent**: instead is really sequential in fact operation are computed in $O(n)$ time complexity, where $n$ is the length of the input sequence and maximum path length in the network of $O(n)$ because each step in the sequence depends on the previous step, forming a recurrence relation. 
+- **Recurrent**: instead is sequential in fact operation are computed in $O(n)$ time complexity, where $n$ is the length of the input sequence and maximum path length in the network of $O(n)$ because each step in the sequence depends on the previous step, forming a recurrence relation. 
 
 - **Convolutional**: Pay inted in complexity per layer since we have the kernel that participate to the multiplication.  In this case sequential operation and maximum path lenght are $O(1)$ and $O(log_k(n))$ because each layer only involves a fixed number of operations and the number of layers is proportional to the logarithm of the size of the input. This makes convolutional neural networks very efficient for processing images and other high-dimensional data.
 
@@ -59,21 +85,24 @@ At each timestep **Zoneout** draws a mask and if the element in the mask is 1 th
 
 Charateristic of this is stochasticity, so losing differentiability, but this thing act as a regularizer, isn't even much different from dropout.
 
-## Clockword networks
+## Clockwork networks
 
 Since zoneout is random chance we can thing to a static way approach to design skipping connections. This shitload of arrows is composed of parts these hidden layers, and we can thing that each of those $T_1,T_2,...$ these operates at a different clock, updating states at different frequencies.
 
 For example $T_g$ has an update clock of 1 every 10 seconds, if we have a data stream of $1 \;Hz$  this is the "slowest updated". The module at left is one that runs at a different frequency, the one at left need smaller or larger frequency? Well higher frequency because we want to transfer high frequency information to the next module, so the first capture very fast changing details in our sequences and the ones at right part becomes thing that capture things in a long range of dependacies
+
 ![[Pasted image 20230414144745.png]]
 
 ## Skip RNNs
 
 What's happening here is that the bottom line here $S_{t-1}$ is the history while the $\tilde{u}_t$ is used to manage if update or not. If we do not update just copy the last state. This is a parametrized neuron that will learn when to update or not.
+
 ![[Pasted image 20230414145418.png]]
 
 ### Skip models on MNIST
 
 We're treating it like a sequence problem seeing the pixels one by one. Some pixels are being ignore other are attended.
+
 ![[Pasted image 20230414145702.png]]
 
 
@@ -92,11 +121,13 @@ Also these are a lot of non differentable operation: Copy and flush. For update 
 ### Recap : 1
 
 Each of these structure has a different approach.
+
 ![[Pasted image 20230414150610.png]]
 
 ### Recap : 2
 
 And techniques used to get a larger context of "long range dependancies".
+
 ![[Pasted image 20230414150658.png]]
 
 # Neural Reasoning

@@ -46,7 +46,7 @@ We can as well have $f({x_1}) \approx P(x_1)$ so our *prior*. Is basically the f
 
 Class of **exact** inference algorithms (belief propagation). Using factor graph representation to provide a unique algorithm for our models.
 
-Recall the markov random chain we had something like node and the note after in between we have a featur function: $P(S_{t}| S_{t-1})$
+Recall the markov random chain we had something like node and the node after in between we have a featur function: $P(S_{t}| S_{t-1})$
 
 Inference is feasible for chain and tree structures, in HMM we have Forward backward, in markov random fields is computationally more expensive because we've not probabilities here, we've got only functions and most importantly: we can have dense connection because of the undirected nature of these models.
 
@@ -54,6 +54,7 @@ Inference is feasible for chain and tree structures, in HMM we have Forward back
 
 Restructure to obtain a better structure using spanning tree or Chow-Liu (approximation)
 Or approximated inference (variational, sampling). In general what we do is:
+
 ![[Pasted image 20230314121211.png]]
 
 ## Restricting to Conditional Probabilities
@@ -69,13 +70,15 @@ Marginalizing on Z, one sums over y, and obtain that values by marginalization
 
 We're modeling the white nodes given the one in blue (observable ones).
 We've got a clique there with those three functions, the product of those three distributions give the potential function of the link
+
 ![[Pasted image 20230314122538.png]]
 
 ## Feature functions
 
 What feature function do?
 
-This feature function tells us how muhc we like a specific oberved pixel to be in a certain cluster, then the connection to $y_{i,}y_{j}$ gives you contraints, usually nearby pixels are in the same class.
+This feature function tells us how much we like a specific oberved pixel to be in a certain cluster, then the connection to $y_{i,}y_{j}$ gives you contraints, usually nearby pixels are in the same class.
+
 ![[Pasted image 20230314122718.png]]
 
 ## Discriminative Learning
@@ -89,14 +92,14 @@ We can see that
 $P(Y | X) = e^{\sum_{i=1}^N F(X_i,Y_i-1, Y_i, i)}$
 
 
-
 ## HMM Vs. CRF
 
-In CRF we give a general description of what we'd like to see for example for language, or NLP, we can say tha something is a name if starts with a capital letter, so for example $x_{t}$ is th word and $f_e$ gives that information.
+In CRF we give a general description of what we'd like to see for example for language, or NLP, we can say that something is a name if starts with a capital letter, so for example $x_{t}$ is the word and $f_e$ gives that information.
 
 ![[Pasted image 20230314123845.png]]
 
 We can express relationships between past and futures "tokens" (in NLP). This enhance our model.
+
 ![[Pasted image 20230314124036.png]]
 
 Product of cliques over feature function, because feature function doesn't depends by time, neat!
@@ -112,6 +115,7 @@ the $\mathbb{1}$ are indicator variable that are 1 in a spot and 0 in all the ot
 Equivalent for ***smoothing problem***? $P(Y_{t},Y_{t-1}| X)$ solved by exact forward backward inference
 
 - Sum product message passing on the LCRF factor graph
+
 ![[Pasted image 20230314125004.png]]
 
 We bring the cliques ***local*** potential functions when we forward the message from the past and when we backward it from the future.
@@ -119,8 +123,8 @@ We bring the cliques ***local*** potential functions when we forward the message
 ## Other inference problem
 
 Solving true complex problem is rather impractical for real graphs.
+Classical setting on finding our $\theta$ we are doing max conditional log-likelihood
 
-Classical setting on finding our $\theta$ we are doing max conditional log-likelyhood
 ![[Pasted image 20230315161937.png]]
 Supervised setting the conditional is the *dataset* made this way $D = \{ (x^1,y^{1}),...(x^{n},y^{n})\}$
 
@@ -149,6 +153,7 @@ $$
 \partial \frac{Z(X^n)}{\partial \theta_{k}}=\frac{1}{Z(X^{n)}}\sum\limits_t\sum\limits_{y,y'}exp(\sum\limits_{k}f_k(...))
 $$
 
+![[Pasted image 20230619191228.png]]
 
 $\mathbb{E}[f_k]$ is our empirical expectation over our data, so we pick our y,y' and we plug them in to get this expectation. For the posterior we do not compute entirely on the data, because we're marginalizing our the y, so if we want to find a solution, the optimal will be when the expectation under model posterior matches the expectation over the data, this is when we get the optimum. This is a rather intresting property we need to know. 
 
@@ -157,9 +162,10 @@ $\mathbb{E}[f_k]$ is our empirical expectation over our data, so we pick our y,y
 ```
 
 
-## Stocasthic Gradient Descent
+## Stocasthic Gradient Descent for Learning
 
 Then we have our $\sigma$ that is an hyperparameter that regulate how the models is `rigid`
+
 ![[Pasted image 20230315164513.png]]
 
 ## Engineering features
@@ -167,11 +173,13 @@ Then we have our $\sigma$ that is an hyperparameter that regulate how the models
 This models: (Markov Random Fields) are very good for structured prediction, because these prediction isn't a flat output, it's more like an output of hierarchical prediction, so you predict a superclass with subclasses and so on (tree like). 
 If you know that there is a lot of classes and between them there are a lot of common things then.
 For complicated output spaces this become intresting. 
+
 ![[Pasted image 20230315164651.png]]
 
 ## Limits of CNN
 
 We cannot help a CNN to a understands that the sky is up or other things like those, but adding MRF, we can do a pre-filtering before applying the CNN to get much better results.
+
 ![[Pasted image 20230315165100.png]]
 
 ![[Pasted image 20230315165405.png]]

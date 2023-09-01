@@ -4,6 +4,30 @@ Status: #notes
 
 Tags: #ispr[[A.I. Master Degree @Unipi]]
 
+- [[#Limitations of RNN (GRNN)|Limitations of RNN (GRNN)]]
+	- [[#Limitations of RNN (GRNN)#Sequence to sequence learning|Sequence to sequence learning]]
+- [[#Pay more attention on decoding|Pay more attention on decoding]]
+- [[#Black box|Black box]]
+- [[#Let's take a look inside the box|Let's take a look inside the box]]
+- [[#Box|Box]]
+	- [[#Box#Relevance|Relevance]]
+	- [[#Box#Softmax|Softmax]]
+	- [[#Box#Voting|Voting]]
+	- [[#Box#Attention in equations|Attention in equations]]
+- [[#Focussing on attentional module|Focussing on attentional module]]
+- [[#Attention visualized|Attention visualized]]
+- [[#Seq-to-Seq on steroids|Seq-to-Seq on steroids]]
+- [[#Hard attention|Hard attention]]
+- [[#Self attention|Self attention]]
+	- [[#Self attention#Self attention with examples|Self attention with examples]]
+- [[#Visualizing multi head attention|Visualizing multi head attention]]
+- [[#Multi self attention heads in equations|Multi self attention heads in equations]]
+- [[#Transformers are not sequential|Transformers are not sequential]]
+- [[#Attention in computer vision|Attention in computer vision]]
+- [[#Vision transformers|Vision transformers]]
+	- [[#Vision transformers#Take home lesson|Take home lesson]]
+
+
 # Dealing with structured data
 
  Two lectures today and tomorrow
@@ -12,7 +36,7 @@ Tags: #ispr[[A.I. Master Degree @Unipi]]
 
 ## Limitations of RNN (GRNN)
 
-In recurrent models we get weights sharing that is very good because the parameter are smaller, they are all the same in fact they are used in the next sequence and also backprop in time, in the [[Lesson 14 - Seqeuential Models and Gated RNN#Encoder-Decoder architectures]] we've seen compositional pieces like encoder decoder.
+In recurrent models we get weights sharing that is very good because the parameter are smaller, they are all the same in fact they are used in the next sequence and also backprop in time, in the [[Lesson 14 - RNN Sequential Models and Gated RNN#Encoder-Decoder architectures]] we've seen compositional pieces like encoder decoder.
 
 There are piece relevant in a certain time, other pieces that are not relevant and pieces always relevant
 
@@ -33,9 +57,11 @@ What is the context, since with RNNs used to compress context, so the context is
 
 
 We need encoder-decoder scheme
+
 ![[Pasted image 20230413143744.png]]
 
 Is the originally $c = h_n$ good enough? No, we now need another recurrent neural network separated from that, that has a different tasks, because the latter has a compression task, the next needs to extrapolate information and spit it.
+
 ![[Pasted image 20230413143936.png]]
 
 This one is another RNN, receiving in input a context vector $c$, we can decide to assume $c = s_1$, but if we don't want to lose memory we can as well do $W_c$ a separate set of parameters that are connected to all the other, then the decoder unfolds, this is a generative use of a recurrent neural networks
@@ -114,8 +140,14 @@ Attention was used also as an explainer of what neural network is learning but i
 ![[Pasted image 20230413152128.png]]
 
 ## Hard attention
+
 Instead of a combination of all the $h_i$ we take one, problem is that random sampling is not differentiable operation, backpropagating there what cause? The gradient should pass from there. We can do pass trough (just go and i don't mind really), policy gradient, and other.
-![[Pasted image 20230413152325.png]]
+
+So we can use Monte Carlo Sampling procedure or [[Reinforcement Learning]], to explore different attention choices. 
+
+### Overcoming non differentiability
+
+This means that instead of selecting a single element with the highest relevance score, multiple elements are sampled according to a certain probability distribution. This distribution can be defined based on the relevance scores or through a **learned policy**, more in  [[Lesson 20 - Policy-Based RL#Policy gradient]].
 
 # Transformers 
 
@@ -138,9 +170,11 @@ In transformer architectures, self-attention is used in both the encoder and dec
 In summary, self-attention allows for capturing contextual information within a single sequence, while simple attention focuses on specific parts of different sequences. Self-attention is mainly used in transformer architectures for encoding information from an input sequence, while simple attention is mainly used in decoder layers for generating outputs from encoded information. 
 
 Computing attention between each of the inputs $X_i$, but before we want to transform these
+
 ![[Pasted image 20230413152807.png]]
 
 ### Self attention with examples
+1
 ![[Pasted image 20230413153015.png]]
 ![[Pasted image 20230413153243.png]]
 ![[Pasted image 20230413153437.png]]
@@ -162,11 +196,13 @@ And finally
 If we want to model sequences, to make them work on sequential data where position matter we add an information in the encoding into the embedding an additional embedding that is the position of the words, stupid way is to use a vector one hot encoded but this has many problems because we need to encode position on a very large vector, a better way is to use $\sin, \cos$. For even and odd positions.
 
 This under is a sentence with 50 tokns, taking the first slice orizontally is the encoding of the position zero, each time we go down one level we're sliding like bit shifting. We can transform one position to another by using **rotational matrixes**.
+
 ![[Pasted image 20230413154538.png]]
 
 ## Attention in computer vision
 
 We're doing the small features in low level pixel by pixel (treating them like word that compose an image from a CNN).
+
 ![[Pasted image 20230413155430.png]]
 
 ## Vision transformers
@@ -174,8 +210,6 @@ We're doing the small features in low level pixel by pixel (treating them like w
 ![[Pasted image 20230413155534.png]]
 
 Self attention is the key, key-query is very good, while the rest of architecture stays the same.
-
-
 
 ### Take home lesson
 

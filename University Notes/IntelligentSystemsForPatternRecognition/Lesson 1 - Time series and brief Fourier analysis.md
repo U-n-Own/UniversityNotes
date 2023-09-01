@@ -31,7 +31,7 @@ $$
 Cov[x_t,x_{t+\tau}]=\mathbb{E}[(x_{t}-\mathbb{E}[x_{t}])(x_{t+\tau} - \mathbb{E}[x_t+\tau])
 $$
 
-This measure says that for big values of the first variable $X$ corresponds big values of $Y$ and the same for smaller values, then Covariance is $\lt 0$, othwerwise is negative, so basically show the *tendency of a linear relationship* between $X,Y$
+This measure says that for big values of the first variable $X$ corresponds big values of $Y$ and the same for smaller values, then Covariance is $\gt 0$, othwerwise is negative, so basically show the *tendency of a linear relationship* between $X,Y$. If is zero they do not vary togheter
 
 ### Goals for Time Series
 
@@ -71,6 +71,8 @@ $$
 
 If two points are higly correlated, they are close to each other. Autocorrelation gives us a picture of the signal is repeating itself. If we evaluate the autocorrelation at certain lags $\tau_i$ we can get an autocorrelation plot. These will tells us the strong periodicity of the signal. Near the zero we have the trivial case, the autocorrelation is 1.
 
+Autocorrelation goes from $[-1,1]$, when it's positive we have that negative changes at time t results in negative changes at time $t+\tau$.
+
 ### Two time series
 
 Cross-correlation (discrete), a measure of two time series and how they are similar to each other take $x_1$ and $x_2$ as two distinct time series.
@@ -83,7 +85,7 @@ where
 $$
  \tau \in [-T^{1+1},..., 0 ,...T^2-1]
 $$$$
- \max{\phi_{x_1,x_{2}(\tau)}} \; wrt \; 2\tau: Dispalacement \; x_{1} \; vs \; x_{2}
+ \max{\phi_{x_1,x_{2}(\tau)}} \; wrt \; to \; \tau: Dispalacement \; x_{1} \; vs \; x_{2}
 $$
 We can take the normalized version of $\phi$ to get the cross-correlation, if this is 1 the series have exactly the same shape. Aligning them at the same $\tau$, at $-1$ you have the inverse one of the other, same shape but opposite sign (anticorrelated). At zero they are completely incorrelated (in a linear word), no linear dependancies, but there may be non-linear dependancies to take into account. Speaking linearly you can say that!
 
@@ -216,7 +218,7 @@ DFT in action, but in spectral domain to train a predictor, use the $X_1,...,X_K
 
 We have a lot of spectral analysis tools; for example *Spectral Centroid*, *Spectral Weighted Average* frequency between bands $b_1$ and $b_2$.
 
-This is intresting to understand when you have music signals, for example what instrument are playing, centroids gives you what instrument is playing in a certain spectrum, this is nice for genre classification, also you can use it for RNNs; if you fourier decompose the behaviour of recurrent neuron (layer) in RNNs you can see the spectral centroid moves, that means that the network analize different things in each different layer. You can understand if you RNNs is behaviouring as a filter of a certain type.
+This is intresting to understand when you have music signals, for example what instrument are playing, centroids gives you what instrument is playing in a certain spectrum, this is nice for genre classification, also you can use it for RNNs; if you fourier decompose the behaviour of recurrent neuron (layer) in RNNs you can see the spectral centroid moves, that means that the network analize different things in each different layer. You can understand if you RNNs is behaviouring as a filter of a certain type. 
 
 ### Higher order moments
 

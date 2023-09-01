@@ -16,6 +16,7 @@ Given a joint probability distribution of the variables connected provide a poss
 What we can see is that $Y_3$ has some dependences with his ancestors. So we are surely intrested in $P(Y_{3}| Y_{1,}Y_2)$, those of $Y_1,Y_2$ are not dependant from anyone, we're just storing the edges and the empy nodes. Simply factorize on the dependances.
 
 In this case if all $N$ are independant then we have $N$ variables each with $k-1$ possible values
+
 ![[Pasted image 20230303150908.png]]
 
 Sometimes we encounter a model called **Naive Bayes**, when we get the class the attributes become all independent!
@@ -29,15 +30,23 @@ We have a generation by $\mu$ and $\sigma$ and $\pi$ tells us which sample, this
 ## Local Markov property
 
 Let's reason on the structure of the Bayesian networks
+
 ![[Pasted image 20230303152232.png]]
 
 Where $\bot$ means conditional independance, for far away variable there is no depedance, how do define far away : you're not a children. 
 So apart parents others isn't needed: eg. children of children aren't needed
+
 ![[Pasted image 20230303152541.png]]
 
 Example of students life : Decisional process in student life.
+
 ![[Pasted image 20230303152814.png]]
+
 Why is that? Party and Study are marginally independant, if something happens to Headache they become dependant from each other, there are two causes for Headache, as soon you know the consequences (Headache) and you're not partying then you know immediately that you're studying, seeing a shared effect makes a connection between them! This is called **Marrying of the parents**. If we take tabs then we actually knows that headache is conditioned so you're also considering party and study. Like a chain of reasoning
+
+## Another example of Conditionally Independance
+
+![[Pasted image 20230712195407.png]]
 
 ## Markov Blanket
 
@@ -102,9 +111,20 @@ Considering this
 ![[Pasted image 20230307114920.png]]
 
 Where $Z$ is a list of nodes, given a path is sufficient to find at least one node that blocks it.
-*d-separation* holds if the path $r$ contains **Head-to-tail** structure $Y_{i}\to Y_{c}$ if $Y_{c}\in Z$
-For **Tail to tail** structure $Y_{i} \leftarrow Y_{c}\to Y_j$.
+*d-separation* holds if 
 
+- the path $r$ contains **Head-to-tail** structure $Y_{i}\to Y_{c} \to Y_j$  if $Y_{c}\in Z$
+- 
+- the path $r$ contains **Tail to tail** structure $Y_{i} \leftarrow Y_{c}\to Y_j$. If $Y_c \in Z$
+
+- the path $r$ contains **Head to head** stucture $Y_{i} \to Y_{c}\leftarrow Y_j$. If and neither $Y_c$ nor it's descendants are in $Z$
+
+ Generally in BN, two nodes $Y_i,Y_j$ are d-separeted by $Z$ (a set of nodes) $\iff$ all undirected paths between $Y_i,Y_j$ are d-separated by $Z$: $D_{sep}(Y_i,Y_j | Z)$
+ 
+But since set of nodes $Z$ could be anything we can further define something we already seen: Markov Blankets!
+
+These are the minimal set of nodes which d-separates $Y$ from all the other nodes, making it conditionally independant of all other nodes in BN, remember that these comprehend the parents, child and coparents of our node.
+ 
 ![[Pasted image 20230307115425.png]]
 
 So ***Markov Blanket*** shields all the paths with the minimum number of variables.
@@ -112,16 +132,21 @@ So ***Markov Blanket*** shields all the paths with the minimum number of variabl
 ### Are directed model enough
 
 They don't represent conditional dependance and the acyclicity constraint don't make us represent *symmteric dependancies*,
+
 ![[Pasted image 20230307120054.png]]
 
-As soon we try to model the $Y_{2}\bot Y_{4}| Y_{1}Y_3$ we hit a cycle! 
+As soon we try to model the $Y_{2}\bot Y_{4}| Y_{1}Y_3$ we hit a cycle!  
+
+Why?
 
 ## Markov Random Fields
 
 What is the undirected equivalent of d-separation in directed models?
+
 ![[Pasted image 20230307120244.png]]
 
-The nodes A,B are conditionally independant given C, so the markov blanket of a node is the list of neighbors. We need to find graph structures that makes $\color{pink}Cliques$ that are independant to each other, we want the maximal cliques.
+The node2s A,B are conditionally independant given C, so the markov blanket of a node is the list of neighbors. We need to find graph structures that makes $\color{pink}Cliques$ that are independant to each other, we want the maximal cliques.
+
 ![[Pasted image 20230307120626.png]]
 
 ### Maximal clique factorization
@@ -131,10 +156,18 @@ We want to factorize cliques now, so:
 $$
 P(X) = \frac{1}{Z}\prod_c \psi(X_c)
 $$
+Since we're seeking for local properties of some nodes in our graph, we can use potential function define them over some cliques, since potential function are not probabilities, other than the need to normalize they has to be defined properly to work well. Because they needs to weight which configuration of our local variable is preferred.
+
+![[Pasted image 20230613193632.png]]
+
+![[Pasted image 20230613193708.png]]
+
+Boltzmann distribution is another example of widely used potential function.
 
 ### Directed to undirected
 
-Getting rid of direction is easy, if you simply cancel the orientation, when you have a $V$ structure, you create a connection between parents (*Marrying the parents*) and reorient the arrow from parents to child node, to make sure they ends in the same clique, when we remove the direction we **Moralize** the graph, this will be an equilvalent class for each directed type of graph, sometime changing orientation don't changes things.
+Getting rid of direction is easy, if you simply cancel the orientation, when you have a $V$ structure, you create a connection between parents (*Marrying the parents*) and reorient the arrow from parents to child node, to make sure they ends in the same clique, when we remove the direction we and add edges we **Moralize** the graph, this will be an equilvalent class for each directed type of graph, sometime changing orientation don't changes things.
+
 ![[Pasted image 20230307121143.png]]
 
 ## Learn causation from data with Bayesian Nets
@@ -147,8 +180,10 @@ We want to learn some structure given the RV, all observable. We want to infer t
 
 #### Approaches structure finding
 
-- Search and Score: Search in all the space (NP-Complete problem), we can call a model selection problem, we find for a particular structure that is simple enough, needs to score how complex the graph against how good is.
+- Search and Score: Search in all the space (NP-Complete problem), we can call a model selection problem, we find for a particular structure that is simple enough, needs to score how complex the graph against how good is. So by doing some regularization on the graph we can say.
+
 - Constraint based: Constraint the graph starting fully connected and start to deleting edges using test of conditional independance. We're taking test on conditional independance.
+
 - Hybrid: The problem of search and score is complicated, we use constraint based to find an initial structure and then we use a score to measure
 
 ##### Scoring function
@@ -156,6 +191,7 @@ We want to learn some structure given the RV, all observable. We want to infer t
 We want the scoring function to have **consistency** (Same score for graph in same equivalence class) and **Decomposability** (locally computed, so we want to use dynamic programming)
 
 Approaches are:
+
 - Information theoretic: based on likelyhood plus some model penalization term for complexity
 - Bayesian: score using posterior
 
@@ -169,20 +205,25 @@ The AIMA book contains a lot of search strategies.
 
 - *Constraint search strategy*: start from a structure and modify locally iteratively (because we keep the score that aren't modifed for dynamic programming reasons). Some search algorithm are simulated annealing, greedy hill-climbing and more
 
-- *Constraint search space*: Know node order; as we seen we can search by parents.
+- *Constraint search space*: Know node order; as we seen we can search by parents. (In the markov blanket)
 
 #### Contraint based 
 
 Here we work on test of conditional independance $I(X_{i,}X_{j}| Z)$, from statistichs we need to define a good statistics for conditional independance and testing if there is an edge between two nodes.
+
 ![[Pasted image 20230307124221.png]]
+
 This statistic will say how $X_{i,}X_j$ are influenced by $Z$, we want to determine **Mutual information** (see information theory)
 
 #### Testing strategy
 
 If the edge between two node and survive the test, we keep it there and test the other edges for uncoditional independance, if someone fails we cancel the edge, otherwise we will reach the edge we tested initially, and so with 2,3,4 variables. Super Exponential
 
-- Level wise testing with PC algorithm avoid super-exponential, going from order of increasing size.
-- Node wise testing : single edge at a time, until exhaust all
+- *Level wise testing*: with PC algorithm avoid super-exponential, going from order of increasing size.
+- 
+- *Node wise testing* : single edge at a time, until exhaust all
+
+![[Pasted image 20230614172908.png]]
 
 
 ### Take home lesson

@@ -4,33 +4,37 @@ Status: #notes
 
 Tags: [[IntelligentSystemsForPatternRecognition]], [[Probability]],[[A.I. Master Degree @Unipi]]
 
-# Graphical Models or Generative
+# Graphical Models a framework for Generative
 
 Generative learning is when we have parameters of a certain probability distribution, we can generate from a model also if we approximate enough.
+
 If we have large avaiability of labeled data a discriminative model will work better, instead generative even if you have class information is used to *model a distribution of the data*, and when you do it with enough accuracy you could generate samples. Since NNs are universal approximator they do not assume any family of distribution for generation, instead here the assumption a priori are important! So reasoning on prior knowledge is something very intresting, giving a model a prior knowledge ins't that easy. If one want to model some task needs big models and we need to... approximate to break down complexity.
 
 ## Graphical models framework
 
 We do graph based task, that usually are $NP-Complete$.
 
-For machine learning usually *Inference* is the prediction, but in general is a concept that describes a process to infer some knowledge to *learn*, so also learning is inference.
+For machine learning usually *Inference* is the prediction, but in general is a concept that describes a process to infer some knowledge to *learn*, so also learning is inference.2
 
 Let's define formally: 
+
 ```ad-important
 A graph whose **nodes** are random variables whose **edges** (links) represent probabilistic relationships between the variable
 ```
 
 So depending on the edges we have different models!
+
 ![[Pasted image 20230302150022.png]]
 
 In the first we have the nodes, and we can say that the directed node is entailed by the others.
 No cycles here, because casuality can't have them!
 
-The undirected graphs are good if we want that things obey some costraints
+The undirected graphs are good if we want that things obey some costraints they encode *symmetric* relationships. Work if we want things has to be constrainted
 
-The dynamic models are whose in which random variables can appear in time and disappear. Use them for dynamic systems: **Petri nets**?
+The dynamic models are whose in which random variables can appear in time and disappear. They are directed genrally, can also be undirected, but the things is that they change in time
 
-Example we want to give each pixel on an image a certain probability to be in a class
+Example we want to give each pixel on an image a certain probability to be in a class: We know the colors of pixel but we want to attribute the semantic class to our pixels by seeing color and near pixels.
+
 ![[Pasted image 20230302150553.png]]
 
 An example of prior is that all from a certain high of image will be likely the sky or mountain and the part below will be terrain.
@@ -71,7 +75,7 @@ $$
 $$
 
 
-The $\color{red}{first \; term}$ in the second part is the *likelyhood* so how much probable is our data  so probability of our model to generate observed data, the $\color{yellow}{yellow \; term}$ at right is called *posterior* and the second $\color{blue}{term}$ at numerator is the *prior*, that gives us how good is the model. The $\color{green}{denominator}$ is the *marginal likelyhood*  but is also called *evidence*.
+The $\color{red}{first \; term}$ in the second part is the *[[likelyhood]]* so how much probable is our data  so probability of our model to generate observed data, the $\color{yellow}{yellow \; term}$ at right is called *[[posterior]]*, telling us how to update our beliefs after observing the data and the second $\color{blue}{term}$ at numerator is the *[[prior]]* representing the initial beliefs and assumption on our data, that gives us how good is the model. The $\color{green}{denominator}$ is the *[[marginal likelyhood]]*  but is also called *evidence*.
 
 A practical application of marginalization over all possible hypotesis is to rewite bayes like this
 ![[Pasted image 20230302154036.png]]
@@ -96,16 +100,23 @@ Knowing that is raining make them independant, instead before they weren't! Thin
 **Inference** how can we determine the distribution of one or several RV given the observed ones?
 
 Usually we have an hypotesis $h_\theta$. How do we do inference? How do we infer the values of $X$ given $d$?
+
+### Bayesian
+
 ![[Pasted image 20230302154851.png]]
 
-The first term after the sum is the prediction given the hypotesis, term number 2 is weighting the prediction given the posterior, then what we do is: the better the model is in according to posterior the way we fix the weightning will decrease... (until convergence)
-This is called Bayesian Prediction, there is a theorem about this that says that nothing can beat a Bayesian predictor. But we cannot we go trough all the possible instantiation, this is not feasible, so we pick up the best hypotesis, but what is the best? The one that has the better posterior, the **Maximum a Posteriori Hypotesis** (we pick the best $P(h_i|d)$) and then we take a decision based only on that.
+The first term after the sum is the prediction given the hypotesis, term number 2 is weighting the prediction is our *posterior*, then what we do is: the better the model is in according to posterior the way we fix the weightning will decrease... (until convergence).
 
-Thanks to the Bayes rule we can get $P(d|h)$ if we know the other one, the best we picked before. If all hypoteses are a priori all the same probability we're intrested in the **Maximum likelyhood hypotesis** so rather than the posterior we want to maximize the likelyhood. This is the maximum likelyhood estimator. Usually parameters are obtained by ML estimate. The presence of the prior influences what we use, because it's effect will be useful for Maximum a posteriori, but the prior is good only if we have few data, otherwise our prior on that collection of samples will be much less important. 
+### Differentiating MAP, Bayesian and ML
+
+This is called Bayesian Prediction, there is a theorem about this that says that nothing can beat a Bayesian predictor. But we cannot we go trough all the possible instantiations, this is not feasible, so we pick up the best hypotesis, but what is the best? The one that has the better posterior, the **Maximum a Posteriori Hypotesis** (we pick the best $P(h_i|d)$) and then we take a decision based only on that.
+
+Thanks to the Bayes rule we can get $P(d|h)$ if we know the other one, the best we picked before. If all hypoteses are a priori all the same probability we're intrested in the **Maximum likelyhood hypotesis** so rather than the posterior we want to maximize the likelyhood. This is the maximum likelyhood estimator. Usually parameters are obtained by ML estimate. The presence of the prior influences what we use, because it's effect will be useful for Maximum a posteriori, but the ML is good only if we have few data, otherwise our prior on that collection of samples will be much less important. 
 
 ![[Pasted image 20230302155319.png]]
 
 This works also for fitting a model!
+
 Maximizing the likelyhood of our data, so how much the model is good at explaining data, in fact MSE is a proxy for likelyhood, but also take in consideration prior knowledge, maybe we penalize model that are too complex, this a measure of *regularization*. The sum of squares of $\theta$... finish here
 
 #### Inference and Learning in Probabilistic models
@@ -136,6 +147,7 @@ $$
 ## Regularization
 
 Thanks to information theory we can exploit log in this way
+
 ![[Pasted image 20230303143436.png]]
 Minimum description principles is a thing that try to minimize the bits to represent informations
 For zero bits we just have a lookup table.
@@ -143,12 +155,20 @@ For zero bits we just have a lookup table.
 #### MAP vs ML
 
 Maximum Likelyhood (ML) and MAP are *point estimates* of Bayesian, considers a space in which $\theta$ veries, when you take a Bayesian approach you sum over all possible values of the $\theta$ space
+
 and use a particular instance of the points. (Integrating usually).
+
 In MAP you're just picking up the maximum.
 
 ## Maximizing Likelyhood
+
+We are interested in the model that *most probably* generated our data $d$.
+
 ![[Pasted image 20230303143810.png]]
-Problem comes when you have **hidden variables**, variables that we have no data to plug and see how they are done. We have a set of observed random variables $x$ (training data), and unobserved hidden or latente variables $z$ (data clusters). How to solve?
+
+Problem comes when you have **hidden variables**, variables that we have no data to plug and see how they are done. We have a set of observed random 
+variables $x$ (training data), and unobserved hidden or latente variables $z$ (data clusters). How to solve?
+
 ![[Pasted image 20230303144017.png]]
 We try to maximize the *complete likelihood*, where we have observable variables and unobserved, we predend to have observed then and we do *chain rule* to decompose them.
 Since $z$ are not avaiable we introduce them by **marginalization**! 

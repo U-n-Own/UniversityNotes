@@ -24,6 +24,7 @@ Like we did with time series we can have probability time series called sequence
 We have a reference population as set of i.i.d. sequences $\textbf{y}^{1,}..., \textbf{y}^N$
 
 ## Markov Chain and HMM
+
 ![[Pasted image 20230308165145.png]]
 ![[Pasted image 20230308164811.png]]
 ![[Pasted image 20230308164838.png]]
@@ -69,13 +70,16 @@ Self loops says that we stay there with some probability $p$, or emitting to a d
 
 Now that we have these models we can do inference on those.
 
-***Smoothing*** Inferring a posterior, given something that is observable, what will be the probability that tells us
-***Learning*** Inferential problem of given a set of observed sequences (data), we want to find *prior* $\pi$, $A,B$. How do we find them? Solve a maximum likelyhood problem.
-***Optimal state Assignment*** Find optimal assignment of all the state given a visible sequence, so we have a possible sequence. Solved by max-product message passing (*Viterbi algorithm*)
+***Smoothing*** Inferring a posterior, given something that is observable, what will be the probability of the past hidden states given observed sequence. Take into account both past and future. (*Forward-Backward algorithm*)
+
+***Learning*** Inferential problem of given a set of $N$ observed sequences (data) and number of hidden states, we want to find *prior* $\pi$, *emission* and *trantition*$A,B$ distributions. How do we find them? Solve a maximum likelihood problem.
+
+***Optimal state Assignment***: Given a model $\theta$ and an observed sequence $Y$, find optimal assignment of all the state given a visible sequence, so we have a possible sequence. Solved by max-product message passing (**Viterbi algorithm**)
 
 ![[Pasted image 20230308172651.png]]
 
 ## Forward-Backward Algorithm
+
 ![[Pasted image 20230314094005.png]]
 
 How do we **exploit factorization?**
@@ -88,13 +92,15 @@ $$P(S_t = i | y) = P(S_t = i, y) / P(y)$$
 
 where $P(y)$ is the probability of observing the vector $y$.
 
-Now, if we assume that the state i at time t is conditionally independent of all other states and observations given the state i-1 at time t-1 (which is a common assumption in many probabilistic models), we can rewrite the joint probability as:
+Now, if we assume that the state $i$ at time $t$ is conditionally independent of all other states and observations given the state $i-1$ at time $t-1$ (which is a common assumption in many probabilistic models), we can rewrite the joint probability as:
 
 $$
 P(S_t = i, y) = P(y | S_t = i) * P(S_t = i | S_{t-1})
 $$
 
-where $P(y | S_t = i)$ is the probability of observing the vector y given that the system is in state $i$ at time $t$, and $P(S_t = i | S_{t-1})$ is the transition probability from state $i-1$ at time $t-1$ to state $i$ at time $t$.
+where $P(y | S_t = i)$ is the probability of observing the vector y given that the system is in state $i$ at time $t$
+
+and $P(S_t = i | S_{t-1})$ is the *transition probability* from state $i-1$ at time $t-1$ to state $i$ at time $t$.
 
 Substituting this into Bayes' theorem, we get:
 
@@ -108,9 +114,9 @@ $$
 P(S_t = i | y) ≈ P(y | S_t = i) * P(S_t = i | S_{t-1})
 $$
 
-This equation tells us that the conditional probability of being in state i at time t given the observations y is approximately equal to the product of two probabilities: the probability of observing y given that the system is in state i at time t, and the transition probability from state i-1 at time t-1 to state i at time t.
+This equation tells us that the conditional probability of being in state $i$ at time $t$ given the observations $y$ is approximately equal to the product of two probabilities: the probability of observing $y$ given that the system is in state $i$ at time $t$, and the transition probability from state $i-1$ at time $t-1$ to state $i$ at time $t$.
 
-Thus, we can say that P(S_t = i | y) is approximately equal to P(S_t = i, y), which is the joint probability of being in state i at time t and observing the vector y.
+Thus, we can say that $P(S_t = i | y)$ is approximately equal to $P(S_t = i, y)$, which is the joint probability of being in state i at time t and observing the vector y.
 
 We want to derive a solution for problem 1.
 ![[Pasted image 20230308232853.png]]
@@ -131,25 +137,32 @@ This is called **alpha-beta** recursion, one start from the future and goes back
 Now we apply conditional independance and manipulate those probabilities to evaluate in a way to get them under terms we know.
 
 $$
-P(S_{t}| S_{t-1})
+P(S_{t}| S_{t-1}): \text{Transition probability distribution}
 $$
 $$
-P(S_1)
+P(S_1) : \pi \; \text{Prior probability distribution}
 $$
 $$
-P(Y_{t} | S_t)
+P(Y_{t} | S_t) : \text{Emission probability distribution}
 $$
 
 These are what we know.
 
+### Filtering aka: deriving the past: $\alpha_t(i)$ 
 
 We want to compute
 
 $$
-\alpha_{t{(i)}}=P(S_{t=i,}Y_{1:t})  = \sum_{j=1}^{C}P(S_{t}=i, S_{t-1}=j, Y_{1:t})
+\begin{align}
+\alpha_{t}(i)= \color{yellow}{P(S_{t=i,}Y_{1:t})} \color{white}{  = \sum_{j=1}^{C}P(S_{t}=i, S_{t-1}=j, Y_{1:t}) \;\;\; \text{[Marginalization]} \; (0)}  \\
+= \sum_{j=1}^CP(Y_t | S_t, \cancel{S_{t-1} = j}, \cancel{Y_{1:t-1}})P(S_t, S_{t-1}, Y_{1:t-1}) \;\;\; (1) \\
+= \sum_{j=1}^CP(Y_t | S_t)P(S_t | S_{t-1}, \cancel{Y_{1:t-1}}) \color{yellow}{P(S_{t-1}, Y_{1:t-1})} \;\;\; (2) \\
+= \sum_{j=1}^CP(Y_t | S_t)P(S_t | S_{t-1})\alpha_t(j)  \;\;\; (3) \\
+\end{align}
 $$
 
 How can we rewrite this? Think to red rectangle i want to separate $S_t$ from the rest, what RV i can use to do it? $S_{t-1}$, but how can i introduce it? By Marginalization as we can see up.
+
 Now we can apply conditional independance assumption. So what we need to bring out? Well $Y_t$!
 
 If we do this we can see that $S_t$ d-separates $Y_t$ from the previous ones
@@ -180,7 +193,8 @@ An example would be : we have in usual msg passing counting how many $a_s$ we ha
 
 # Part 2
 
-We're still on the problem of learning some parameters, that will be fin $\pi, A , B = \theta$ by maximum likelyhood
+We're still on the problem of learning some parameters, that will be fin $\pi, A , B = \theta$ by maximum likelyhood.
+
 ![[Pasted image 20230309144217.png]]
 
 We start from those we know $Y^n$ then we apply the factorization of the observable with respect to the markovian distribution so *prior*... 
@@ -197,9 +211,17 @@ $$
 
 We can transform the summation in there to a multiplication by elevating it to the indicator variables, so a multipication of something to $0$ that is $1$ with a certin probability.
 Then we have a product over time and over the $ith$ and $jth$.
+
+So this is our objective: maximize log likelihood
+$$
+\log P(\mathcal{X},\mathcal{Z}|\theta)
+$$
+We take an expectation over the indicator variables
+
 ![[Pasted image 20230309145048.png]]
 
 Then our outer log pass between all the productory and they becomes simply summations, the indicator variables becomes and go out. The major problem is that we derived this we need to know $\mathbf{Z}$, but thank to expected maximization we need just the $\mathbb{E}(\mathbf{Z})$
+
 ![[Pasted image 20230309145513.png]]
 
 
@@ -215,10 +237,14 @@ We're searching for the top of red curve project it to the blue curve and repeat
 
 How do we compute the expectation of the function upward? (Summation one)
 
-
 Try as an exercise this derivation
+
 ![[Pasted image 20230309153656.png]]
 
+
+### M-step
+
+Maximum likelihood on the precedent step.
 
 ## HMM at work
 
@@ -272,6 +298,7 @@ Useful for multimodal data for example
 ![[Pasted image 20230314112147.png]]
 
 ## Dynamic Bayesian Networks
+
 ![[Pasted image 20230314112504.png]]
 
 Think to graphical model that want to find ancestral tree for someone, these model unfolds but not in time in some structure like we can see above, the model expanded for the number of nodes a children can have. Time is one possible of structural network, that model sequences, if they are acyclic you can model those with bayesian networks.

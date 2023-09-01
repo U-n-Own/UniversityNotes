@@ -2,7 +2,7 @@ Date: @today
 
 Status: #notes
 
-Tags: #ispr[[A.I. Master Degree @Unipi]]
+Tags: #ispr[[A.I. Master Degree @Unipi]][[Programming]]
 
 # PyTorch
 

@@ -4,7 +4,7 @@ Status: #notes
 
 Tags: #ispr[[A.I. Master Degree @Unipi]]
 
-# Reinforcement learning basics
+# [[Reinforcement Learning]] basics
 
 Learning from experience and interaction is the foundal idea at the base of RL.
 
@@ -29,7 +29,7 @@ And yet another important thing is the balance between *exploitation* and *explo
 
 #### Brief interaction with Neuroscience
 
-Reinforcement Learning interact strongly with neuroscience and psycology, since this can be tought as the kind of learning that our brain do many concepts at the core of this paradigm are biologically inspired, also the psychological model of animals behaviour that matches empirical data, more on this can be found in chapter 14-15 of the books Sutton and Barto
+Reinforcement Learning interact strongly with neuroscience and psycology, since this can be tought as the kind of learning that our brain do many concepts at the core of this paradigm are biologically inspired, also the psychological model of animals behaviour that matches empirical data, more on this can be found in chapter 14-15 of the book Sutton and Barto
 
 ### Reward
 
@@ -113,6 +113,9 @@ Learning the policy or something that leads to it is the objective.
 
 Roughly speaking, the value of a state is the total amount of reward an agent can expect to accumulate over the future, starting from that state.
 
+> [!definition]
+> A *value function* is can be tought as $\mathbf{E}$ *return* given a state
+
 How do we value the states? This function is a proxy for the cumulative reward we want to get, this value will tell us that we're in a good state or a bad state, so goodness of a state is a measure like a euristic.
 
 If you're near a cascade then it's a bad state.
@@ -148,8 +151,19 @@ Predicting next reward
 
 The expected reward after we executre an action in a specific state, driven by the previous probability
 
-What assumption we're using? Well conditional independance assumption: $P(S_{t+1}, R_{t+1}| S_t, A_t)$, can be factorized in this $P(S_{t+1} | S_t, A_t)P(R_{t+1}| S_t, A_t)$.
+## Exploiting again Conditionally Independance
 
+What assumption we're using? Well conditional independance assumption (assumiing that next state and reward are conditionally independant from the current state and current reward): $P(S_{t+1}, R_{t+1}| S_t, A_t)$, can be factorized in this 
+
+$$P(S_{t+1} | S_t, A_t)P(R_{t+1}| S_t, A_t)$$
+
+- Here, $P(S_{t+1} | S_t, A_t)$ represents the transition probability, which describes the probability of transitioning from the current state $S_t$ to the next state $S_{t+1}$ given the current action $A_t$. It captures the dynamics of the environment and the agent's interactions with it.
+
+- Similarly, $P(R_{t+1} | S_t, A_t)$ represents the reward probability, which describes the probability of receiving the immediate reward $R_{t+1}$ given the current state $S_t$ and action $A_t$. It characterizes the feedback the agent receives from the environment based on its actions.
+
+```ad-summary
+This factorization simplifies the modeling and computation in reinforcement learning algorithms, such as value iteration, policy iteration, or Q-learning, where the agent aims to optimize its actions based on maximizing expected rewards.
+```
 
 ## Maze environments
 
@@ -198,6 +212,13 @@ For a reward of $+1$, we can solve the infinite serie and get that
 $$
 G_t = \sum_{k=0}^{\infty} \gamma^k = \frac{1}{1-\gamma}
 $$
+### Value function and Action-Value function
+
+The first is the usual value function under a certain policy, while we could further extend this concept by adding another information, the action taken. 
+
+![[Pasted image 20230418123240.png]]
+
+The action-value function will tell us instead of "how good is to be in a certain state", "how good is to be in a certain state **and** performing a certain action".
 
 ## Bellman Equations for MDPs
 
@@ -207,21 +228,18 @@ Things that are relevant are value function, we want to derivate a formulation o
 
 From the book:
 ![[Pasted image 20230419114519.png]]
-"Note how the final expression can be read easily as an expected value. It is really a sum over all values of the three variables, $a, s_0, r$. For each triple, we compute its probability $\pi(a|s)p(s',r|s,a)$, weight the quantity in brackets by that probability, then sum over all possibilities to get an expected value." Equation $3.14$ is the Bellman Equation for $v_\pi$.
+
+Note how the final expression can be read easily as an expected value. It is really a sum over all values of the three variables, $a, s', r$. For each triple, we compute its probability $\pi(a|s)p(s',r|s,a)$, weight the quantity in brackets by that probability, then sum over all possibilities to get an expected value. Equation $3.14$ is the Bellman Equation for $v_\pi$.
 
 We can leverage the case in case $k=0$ and what we get is the expectation for rewards at $t+1$.
-The second part with the $\gamma$ is the exectation of the value that you get as soon as you reach the next state. So we can see that $v(s)$ is expressed in term of itself, who defined what state i can reach? Policy function, all this will become expectation under the policy.
+The second part with the $\gamma$ is the exectation of the value that you get as soon as you reach the next state. So we can see that $v_\pi(s)$ is expressed in term of itself, who defined what state i can reach? Policy function, all this will become expectation under the policy.
 
 So expectation of reward (expected reward) in a specific state is our $\mathcal{R_s}$ and then we can see the example of maze for the next, if we have more than one state we can transite we can say that we have a probability to do the transition and we want to evaluate also the reward we get when we do the transition.
 
 A different view of bellman equation. We're taking the max value over all the action of $R(s,a) + \gamma V(s'))$ becausewe want to find the optimal policy that maximizes the expected total reward over time. As we will see later.
+
 ![[Pasted image 20230418122628.png]]
 
-### Value function
-
-![[Pasted image 20230418123240.png]]
-
-The action value function will tell instead to "how good is to be in a certain state", also "how good is to be in a certain state and doing a certain action".
 
 
 ### Bellman Expectation Equation – Value and Action-Value Functions
@@ -241,9 +259,10 @@ And put it into the $v_\pi(s)$
 
 ### Value and Action-Value Functions – One More Step of Nesting
 
-With a certain probability we execute and action, then we evaluate the expected reward of that action and then we will weight all the state we can reach if we exectute $a$, the first summation pick one action, and the second instead sums over all the possible arrival state, weighting it by the probabilities, some state are not reachable due to constraint, some of them have probability of $zero$ exploring all the possible arrival state, and asking to each of the state the value functions and averaging them sum them to the rewards. All this we will do in a single step lookhaead.
+With a certain probability we execute an action, then we evaluate the expected reward of that action and then we will weight all the state we can reach if we exectute $a$, the first summation pick one action, and the second instead sums over all the possible arrival state, weighting it by the probabilities, some state are not reachable due to constraint, some of them have probability of $zero$ exploring all the possible arrival state, and asking to each of the state the value functions and averaging them sum them to the rewards. All this we will do in a single step lookhaead.
 
 For $q_\pi(s,a)$ instead we're doing it by just getting expected reward for that state and action and we take another step to assess how good is that action in that next state. But if things are not observable we marginalize *over all possible next states, weighted by their probabilities under the current policy. This gives us the expected* -> Is this true?
+
 ![[Pasted image 20230418123921.png]]
 
 ### Finding optimal policy
@@ -259,20 +278,355 @@ What if we don't have $q_*$? We can still get an optimal policy
 ### Bellman Optimality Equations
 
 Trading expectations with maximization.
+
 ![[Pasted image 20230418124749.png]]
 
 ### Iterative Policy Evaluation
 
 So now we can solve this problem in an iterative way.
 Let's assume we have a policy, and assume a recursive formulation as an incremental formulation. For all the states in parallel.
+
 ![[Pasted image 20230418125308.png]]
 
 The first sum is when we choose the actions $a$ weighted by their respective $\pi(a^{(i)}|s)$.  The second sum is the setting of the arrival states.
 
-This is called backup diagram, btu why, these diagram relationships form the basis of the update or *backup operations* of our systems.
-What the diagram signifies is tht we have the solic circles (our couple of state action), starting at $s$, the root node the agent can take any of the bottom actions (based on it's policy). 
+This is called backup diagram, but why? These diagrama relationships form the basis of the update or *backup operations* of our systems.
+What the diagram signifies is tht we have the solid circles (our couple of state action), starting at $s$, the root node the agent can take any of the bottom actions (based on it's policy). 
+
 The Bellman Equation averages over all possibilities, weighting each by it's probability of occurring. 
+
 ![[Pasted image 20230418125829.png]]
+
+In order to obtain $v_{k+1}$ from $v_k$ this algorithm applies the same operation to each state $s$, replacing the old value with a new obtained from the $s'$ (successor) and the *expected immediate rewards*: **Expected update**.
+
+Each iteration update the values of every state to produce new *approximated value function* $v_{k+1}$.
+
+All update are called expected because are doing expectation over all possible next states.
+
+![[Pasted image 20230707122020.png]]
+
+
+### Evaluating iteratively in gridword
+
+Imagine another game in a grid, we need to do a policy evaluation, and what policy we can give to the agent? A random policy, so each of the four action are equiprobable, then we evaluate policy on environment.
+
+![[Pasted image 20230419162344.png]]
+
+#### Evaluating policy
+
+Initially our value is zero because we do not know nothing about the grid. Then we apply the *Bellman expectation*. Again summing over all action in the space (a term for each N.S.W.E. actions), so everytime we take action we pay $-1$. 
+
+Note: In stochastic envirnoment if we take an action we could finish in a state that was not supposed to be reached, now we're assuming that we reach that state with our action in a deterministic manner.
+
+In this case we can think to $v_k$
+
+$$
+\begin{align}
+v_1 = 0.25[-1+0]^N+0.25[-1+0]^S+0.25[-1+0]^W+0.25[-1+0]^E \\
+\end{align}
+$$
+Then we can see that keeping iterating we reach a stable point, all we do is to averaging the neighbour.
+How do we change the policy in this case? Since we're maximizing total expected cumulative reward, at iteration 1 we want to reach the zero value and we have only 1 direction to get the best expected return go up or left for example, at iteration two we have a better policy that knows more about other states that previously used a random policy.
+As we can see at iteration three we just reached a stable policy, in fact after that the value grewth only by magnitude. Learning policy directly converge sooner but it's more difficult to optimize. (We reached $\pi^*$)
+
+
+![[Pasted image 20230419162527.png]]
+![[Pasted image 20230419163753.png]]
+
+### Improving policy
+
+What we just did was get a random policy and change it with respect to itself evaluating with Bellman and improve it. Greedy approach pick one action that improves the policy (locally optimal).
+
+![[Pasted image 20230419164502.png]]
+
+### Iterating over policy
+
+![[Pasted image 20230419164808.png]]
+
+So giving the fact that policy iteration converge really fast we can do it in a single step.
+
+![[Pasted image 20230419164855.png]]
+
+This bring us to a **Generalized Policy Iteration**: Any policy and any policy improvement, and what are the best? Greedy one, we evaluate policy under greedy action, but now we're doing from Bellman expectation a maximization but incrementally, thing bring us to *Value Iteration*
+
+![[Pasted image 20230419165047.png]]
+
+![[Pasted image 20230707130452.png]]
+
+#### Value iteration
+
+![[Pasted image 20230419165224.png]]
+
+![[Pasted image 20230419165209.png]]
+
+In Sutton and Barton book we have the new backup diagram that change only an arc that signal the maximization step
+![[Pasted image 20230419165354.png]]
+
+## Wrapping up on  Model-based RL
+
+Prediction: evaluate given policy
+Control 1: Learning from a random policy and alternating policy eval and improvement getting to the best one
+Control 2: We don't need to alternate, we need just to repeadetly update value function by doing maximization
+
+![[Pasted image 20230419165517.png]]
+
+# Model free RL
+
+What happens if we get rid of the model?
+
+We're moving from expectation based approach to a sample based approach, so montecarlo methods...
+
+In fact now the complexity of enviroment is less, but now we pay that with the fact that we're doing stochastic update.
+If i have sample of experience i can compute expectation as we can saw before in [[Lesson 10 - Sampling Methods]].
+
+## Monte-Carlo Reinforcement Learning
+
+We're trying to approximate the expected cumulative rewards: our $G_t$.
+
+So a sample consist in a *Return* value, we can get a certain number of return and average them and our $v(s)$
+
+Now we're **estimating value function** by sampling or better *experience*.
+
+Monte Carlo methods solve RL, by averaging *sample returns*, for each $<s,a>$ pair
+
+$$
+v(s) = Avg(G_i)
+$$
+
+What we do is *incremental averaging*, learning our $v$ function after every episode.
+
+Hence we want to learn value function from sample results.
+
+The problem is that all episodes must finish, there are cases where our agent don't finish the episodes.
+
+![[Pasted image 20230419170827.png]]
+
+### Monte Carlo Policy Evaluation
+
+Sampling episode of experience using the policy, after collecting one sample we use it to compute a new expected return
+
+![[Pasted image 20230419170958.png]]
+
+### Updating states
+
+$G_t - V(S_t)$ comes from incremental mean, we can see it as moving current estimate of our function to the new estimate with a step size of $\alpha$
+
+Where $N(s)$ is number of time I’ve seen state $s$.
+
+If we visualize what is happening the current
+
+![[Pasted image 20230419171235.png]]
+
+
+## Temporal Difference Learning: TD(0)
+
+This isn't the only way to do model free learning, in this way we can only learn at the end of the episode if they terminate, these are really strong requirements, so we need another way.
+
+Learning directly from episodes of experience, every action taken is used for update and learn, but this entails that we're not using ground truth to learn, so we're not learning from actual return but with the reward of the current step.
+
+Let's start from MC:
+
+$$
+V(S_t) \leftarrow V(S_t) + \alpha(G_t-V(S_t))
+$$
+This time we're changing the old value because what we get each time we do a move other than reward we get to another state and we can evaluate a *targer* the TD difference target, by using our value and we get an error $\delta_t$
+
+$$
+V(S_t) \leftarrow V(S_t) + \alpha(R_t +\gamma V(S_{t+1})- V(S_t))
+$$
+We have now a pseudo target we can change at each time step. We're doing ***Bootstrapping***
+
+![[Pasted image 20230707182342.png]]
+
+
+### Bias-Variance Tradeoff (again)
+
+
+MonteCarlo policy evaluation is low to no bias, if we do the evaluate using $v_\pi$ but if low bias in MonteCarlo gets us high variance, while TD learning low variance and high bias.
+
+MonteCarlo is sampling inefficient and we need to get to the end, so would take forever, instead TD is more sample efficient but has very bad convergence properties,
+
+![[Pasted image 20230419172756.png]]
+
+![[Pasted image 20230419173129.png]]
+
+## Unifying and Generalizing
+
+Monte carlo visualized
+
+![[Pasted image 20230419173333.png]]
+
+TD Visualized
+
+![[Pasted image 20230419173347.png]]
+
+Dynamic programming 
+
+![[Pasted image 20230419173423.png]]
+
+
+
+What if we use 1,2,3 action when updating TD learning, so allowing TD learning to execute more action, we're approxximating MonteCarlo, so TD-n when $n \rightarrow \infty$, is MC.
+
+![[Pasted image 20230419173605.png]]
+
+Now what if we use intermidiate estimate? Creating pseudo target $\{n,n-1,n-2...\}$, averaging them getting one target.
+Putting some value $\gamma$ like a decaying factor of these step, now we pick $\gamma$ as a function that integrates to $1$ to get some nice properties. 
+
+## $\lambda$-Return [Forward View]
+
+In the forward view, the idea is to look ahead n steps in the future and estimate the return from that point, then average those returns over multiple trajectories. This approach requires complete knowledge of the environment dynamics and does not naturally support online learning because it needs to collect a batch of trajectories before updating the policy.
+
+This $\lambda$ is a constant behaving like discount factor, pseudo reward far in time are discounted more. This is the ideal $\lambda$-return, if we stop at 1 ($\lambda=0$) we get basic TD-learning, at step two we get a TD learning averaged between the steps and at infinity becomes montecarlo($\lambda=1$).
+
+But with this formulation we lose the possibility to do on-line learning, because depending on the $n$ we must take that many steps before updating. But this is not what we will do. How do we implement it? Well with **Elegilibity Traces**
+
+
+![[Pasted image 20230419173846.png]]
+
+The $\lambda$-return in the TD($\lambda$) algorithm is a method to assign weights to each of the n-steps taken during the current episode. It involves weighting the importance of each visit based on its temporal distance from the current step. The lambda parameter determines the decay rate of these weights, with smaller lambda values assigning higher importance to nearer steps. As a result, the lambda return is a weighted average of the n-step returns, where the weights are determined by the lambda values associated with each step.
+
+So now the update is done by averaging over the $\lambda$-returns weighting the state
+
+![[Pasted image 20230708173316.png]]
+
+## Backward view TD($\lambda$): Eligibility Traces unifying MC and TD
+
+As we were saying in a forward view we need to look forward in time to all the future rewards and decide the best way to combine them with the lambda returns, also the forward view needs until infinity (so we are doing MC), and by evaluating more steps we lose the **on-line learning**.
+
+Elegibility Traces provide a way of implementing Monte Carlo in online fashion (does not wait for the episode to finish) and on problems without episodes.
+
+Using eligibility traces: Frequency and Recency euristics.
+
+Example: Mice getting electrocuted after hearing 3 times bell and then seeing the light, what triggered the zap?
+
+- Suppose an agent randomly walking in an environment and finds a treasure. He then stops and looks backwards in an attempt to know what led him to this treasure? So closer locations are more valuable than distant ones and thus they are assigned bigger values, this bring us to recency and frequency as important heuristics.
+
+![[Pasted image 20230419174349.png]]
+
+Using the same logic, when we are at state s, instead of looking ahead and see the decaying return (Gt) of an episode coming towards us, we simply use the value we have and throw it backward using the same decaying mechanism.
+
+We defined the TD-Error
+
+$$
+\delta_t = R_{t+1} +\gamma V(S_{t+1}) -V(S_t)
+$$
+
+We will backpropagate the error backwards with decay multiplying the error by eligibility trace at each state $s$.
+
+$$
+V(s) = V(s) + \alpha\delta_tE_t(s)
+$$
+
+So we saw that $v(s)$ is a vector of length $|s|$ number of state, that indicator will say to us : the vector with current state.
+
+For example if there is a state visitate more often frequently and recently we assign most credit to that and we propagate reward to that state to also other states because usually to reach that state we come from other states. Backward responsability.
+
+***The eligibility traces effectively capture the credit assignment problem***
+
+![[Pasted image 20230708174154.png]]
+
+Until now we've said how good policy is, now're going to learn it.
+
+## On and Off policy learning
+
+### On-Policy: Model-Free Policy Iteration Using Action-Value Function
+
+![[Pasted image 20230419175250.png]]
+
+The first one has the model but the $Q$ function is model free!
+
+But before we need an exploration policy.
+
+Learning on the fly experiencing we end in a local optima, because doing everytime greedy thing we end up everytime in the same spot, so we need to diversificate, adding a bit of stochasticity, we need randomization to avoid suboptimality.
+
+### $\epsilon$-greedy Exploration
+
+![[Pasted image 20230419175642.png]]
+
+### Monte Carlo Control: Every episode
+
+![[Pasted image 20230708181609.png]]
+
+
+### On policy control with SARSA
+
+What we will do is to start with an evaluation using TD learning, then select with $\epsilon$-greedy policy.
+
+![[Pasted image 20230419175831.png]]
+
+
+### SARSA: State-Action-Reward-State-Action (On-Policy) 
+
+SARSA is a TD learning algorithm that want to learn the $Q$ function this time not the $V$ function! 
+
+*So determine the quality of goodness to take a certain action in a certain state. So TD prediction becomes TD for control!*
+
+Since is a MC hybrid we need to tradeoff exploration and exploitation and we have two version an On-policy and Off-policy, this is the on-policy one.
+
+How to estimate $q_\pi(s,a)$? Recall that episode are a sequence of states and states-action pairs
+
+![[Pasted image 20230708181940.png]]
+
+### Why SARSA?
+
+![[Pasted image 20230708182111.png]]
+
+## SARSA algorithm
+
+![[Pasted image 20230708182247.png]]
+
+## Expected SARSA: Q-learning but with expectations
+
+We're estimating the action value function by taking the expected value over all possible states not only by sampling one
+
+![[Pasted image 20230419180202.png]]
+
+## SARSA algorithm more specific
+
+![[Pasted image 20230420143751.png]]
+
+Eligibility trace is multiplied by $\lambda$ and $\gamma$ where lambda is how fast eligibility fades and the latter is discount factor. A reward discounted $k$ times in the past or future. $\lambda=1$ becomes MC.
+
+## Off Policy:
+
+We postulate two policy a target we want to optimize and the other is the behavioural policy the one we sample from, policy eval is from $\pi$ and policy learning is on policy $\mu$. 
+
+- Learning by imitation: action provided by human and optimizing poliy of artificial agent, for a time evolution of our agent where policy changes, we're generating sample of experience.
+
+
+![[Pasted image 20230420143941.png]]
+
+When doing *Off-Policy* learning with action values we're doing ***Q-learning***
+
+## Q-learning
+
+The pseudo target is the red term : reward + bootstrapping term.
+
+![[Pasted image 20230420144420.png]]
+
+### Off policy control by Q-learning
+
+
+![[Pasted image 20230420144650.png]]
+
+![[Pasted image 20230420145000.png]]
+
+Expected SARSA is doing exactly this, Q-learning performs a maximization instead SARSA perform expectation (Bellman expectation vs Bellman optimality).
+
+### Q-learning algorithm
+
+![[Pasted image 20230420145123.png]]
+
+## Wrapping up: Dynamic Programming vs TD learning
+
+The second row is the control part: we have Q-policy in model based, SARSA in model free
+
+
+![[Pasted image 20230420145316.png]]
+
+
+
 ### Take home lesson
 
 ```ad-summary

@@ -5,16 +5,21 @@ Status: #notes
 Tags: [[Signal Processing]],[[IntelligentSystemsForPatternRecognition]], [[A.I. Master Degree @Unipi]]
 
 # Limitations of DFT
+
 Since we can analyze signal in spectral domain or space domain, we take a signal
+
 ![[Pasted image 20230301175010.png]]
 
-If you do a Fourier Analysis on this that has a low frequency component at the start and high frequency component, we want to do the red boxes stuff. This is what **Wavelets** do!
+If you do a Fourier Analysis on this you see that has a low frequency component at the start and high frequency component towards the end, we want to do the red boxes stuff. This is what **Wavelets** do!
 
 ## Graphical intuition
+
 ![[Pasted image 20230301175207.png]]
+
 We're splitting the signal into the two domains.
 
 Wavelets are localized in time and space, and are flate in the rest. If we use the *Wavelet transform*, we do it with translation.
+
 ![[Pasted image 20230301175321.png]]
 
 What we are doing is correlating the wavelet with our signal in that specific area where the wavelet is not zero, we are also applying it in time by using *convolution* by shifting and convolving, obtaining a response of the wavelet that is localized.
@@ -26,6 +31,17 @@ There is a generic wavelet formulation
 $$
 \sum_{t}x(t)\Psi_{j,k}(t)
 $$
+
+Where the $\Psi(t)$ family of wavelets can be tought as
+
+$$
+\Psi(t) = k_0 \cdot cos(\omega t) \cdot e^{\frac{-t^2}{2}}
+$$
+
+With $k_0$ normalization constant and the exponential used to *dampen* the function in the time to more we move from the center more the function is dampened and go to zero. This is the **Real component**
+
+![[Pasted image 20230612162548.png]]
+
 
 Terms $k$ and $j$ regulate scaling and shifting of the wavelet, this is a discrete version of our wavelet, to make it continuous you need to integrate between these $k$ (scales) that is called *voice*
 $$
@@ -40,7 +56,14 @@ These are different wavelets you can choose as mother wavelet function
 
 A nice tool to see wavelets is [this](http:wavelets.pybytes.com/)
 
-Some wavelest are defined in complex and other in real, you're not intrested only in amplitude but also in the phase, that is given by imaginary part.
+The idea is to change the *Time* knob of our wavelet to move across another function we want to study, and changing the knob of frequency component will squish the wavelet
+
+![[Pasted image 20230612162956.png]]
+
+![[Pasted image 20230612163031.png]]
+
+
+Some wavelet are defined in complex and other in real, you're not intrested only in amplitude but also in the phase, that is given by imaginary part.
 
 If one picks an higher scale like $2^k$ will get an higher frequency wavelet
 
@@ -50,6 +73,7 @@ When we slide our wavelet trought time and computing convolution, we do it for m
 ![[Pasted image 20230302142927.png]]
 
 Similar to power density plot in fourier analysis. The $x$ axis will be the space-time and frequency on $y$, so we're getting sorta an intensity of the point, this is a one-shot picture that represent the complexity of our signal. This is kind of a descriptive analysis, also this is a picture.
+
 ![[Pasted image 20230302143037.png]]
 
 Usually we have very articulated timeseries, and we can reduce an entier time series to a certain picture like this, then analyzing this picture we can learn.
