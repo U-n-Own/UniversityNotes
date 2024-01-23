@@ -1,0 +1,68 @@
+%otes on lessons of Machine Learning course
+
+%We're gonna talkg about a lot of topics covered in some books like deeplearningbook  
+
+\documentclass[12pt]{book}
+
+%Add draculatheme.sty to the document, the draculatheme.sty is one folder below the current folder
+\usepackage{../../draculatheme}
+
+
+%title page
+\title{Notes on Human Language Technlogies}
+
+%Author
+\author{Vincenzo Gargano}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+
+%Package for colors
+\usepackage{color}
+\definecolor{darkgreen}{rgb}{0,0.6,0}
+
+\usepackage{algorithmic}
+\usepackage{algorithm}
+
+\newtheorem{theorem}{Theorem}
+
+\begin{document}
+
+%Title
+
+%Date today
+\date{\today}
+
+\maketitle
+
+%Table of contents
+\tableofcontents
+\clearpage
+
+\chapter{Lecture 1: Intro}
+
+\section{Word embedding}
+Word representation comes from philosophy: Hume, Wittgenstain.\newline
+Words meaning are representation over vectors, but language is made of a sequence of sentences, with certain semantic.
+Is there more information in a sequence than a sequence of words?
+
+\section{Chain of thought}
+LLM have difficult to reason in arithmetic way, sometimes answers are chains of reasoning that models has to takle, if the model manage to do the reason then it can solve the simple question about apples...\newline
+LLMs are great for query and search engines. Today we move towards open question answering we want that models find the info without us telling them
+
+\section{Neural Machine Translation}
+Encoder-Decoder RNNs, inputs is encoded and then passed to a decoder, sequence2sequence.
+When you add attention you want to produce a meaning between words using some weights that are the attention.
+
+\section{Attention}
+Attention bring us to trasformers models, BERT...
+
+\end{document}
+

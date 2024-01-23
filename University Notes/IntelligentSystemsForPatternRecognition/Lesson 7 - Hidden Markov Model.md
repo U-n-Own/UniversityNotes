@@ -24,7 +24,6 @@ Like we did with time series we can have probability time series called sequence
 We have a reference population as set of i.i.d. sequences $\textbf{y}^{1,}..., \textbf{y}^N$
 
 ## Markov Chain and HMM
-
 ![[Pasted image 20230308165145.png]]
 ![[Pasted image 20230308164811.png]]
 ![[Pasted image 20230308164838.png]]
@@ -74,7 +73,7 @@ Now that we have these models we can do inference on those.
 
 ***Learning*** Inferential problem of given a set of $N$ observed sequences (data) and number of hidden states, we want to find *prior* $\pi$, *emission* and *trantition*$A,B$ distributions. How do we find them? Solve a maximum likelihood problem.
 
-***Optimal state Assignment***: Given a model $\theta$ and an observed sequence $Y$, find optimal assignment of all the state given a visible sequence, so we have a possible sequence. Solved by max-product message passing (**Viterbi algorithm**)
+***Optimal state Assignment***: Given a model $\theta$ and an observed sequence $Y$, find optimal assignment of all the state given a visible sequence, so we have a possible sequence. Solved by max-product message passing (*Viterbi algorithm*)
 
 ![[Pasted image 20230308172651.png]]
 
@@ -155,7 +154,7 @@ We want to compute
 $$
 \begin{align}
 \alpha_{t}(i)= \color{yellow}{P(S_{t=i,}Y_{1:t})} \color{white}{  = \sum_{j=1}^{C}P(S_{t}=i, S_{t-1}=j, Y_{1:t}) \;\;\; \text{[Marginalization]} \; (0)}  \\
-= \sum_{j=1}^CP(Y_t | S_t, \cancel{S_{t-1} = j}, \cancel{Y_{1:t-1}})P(S_t, S_{t-1}, Y_{1:t-1}) \;\;\; (1) \\
+= \sum_{j=1}^CP(Y_t | S_t, \cancel{S_{t-1} = j}, \cancel{Y_{1:T}})P(S_t, S_{t-1}, Y_{1:t-1}) \;\;\; (1) \\
 = \sum_{j=1}^CP(Y_t | S_t)P(S_t | S_{t-1}, \cancel{Y_{1:t-1}}) \color{yellow}{P(S_{t-1}, Y_{1:t-1})} \;\;\; (2) \\
 = \sum_{j=1}^CP(Y_t | S_t)P(S_t | S_{t-1})\alpha_t(j)  \;\;\; (3) \\
 \end{align}
@@ -191,7 +190,7 @@ An example would be : we have in usual msg passing counting how many $a_s$ we ha
 
 ![[Pasted image 20230309143615.png]]
 
-# Part 2
+# MLE learning parameters!
 
 We're still on the problem of learning some parameters, that will be fin $\pi, A , B = \theta$ by maximum likelyhood.
 
@@ -212,12 +211,6 @@ $$
 We can transform the summation in there to a multiplication by elevating it to the indicator variables, so a multipication of something to $0$ that is $1$ with a certin probability.
 Then we have a product over time and over the $ith$ and $jth$.
 
-So this is our objective: maximize log likelihood
-$$
-\log P(\mathcal{X},\mathcal{Z}|\theta)
-$$
-We take an expectation over the indicator variables
-
 ![[Pasted image 20230309145048.png]]
 
 Then our outer log pass between all the productory and they becomes simply summations, the indicator variables becomes and go out. The major problem is that we derived this we need to know $\mathbf{Z}$, but thank to expected maximization we need just the $\mathbb{E}(\mathbf{Z})$
@@ -231,7 +224,47 @@ $Z | X, \theta^{(t)}$ consider $Z$ as variables and the rest is constant. Expect
 ## Graphically
 
 We're searching for the top of red curve project it to the blue curve and repeat this until we get to the maximum of the blue curve. This is going to give us a non decreasing trajectory. So we have a model of non-lesser likelyhood. ***Elbow*** in ML : the red one is a lower bound.
+
 ![[Pasted image 20230309145822.png]]
+
+### Breakdown by ChatGPT 
+
+Certainly! It seems like you're referring to a graphical representation of the Expectation-Maximization (EM) algorithm. This algorithm is used in statistical modeling for finding the maximum likelihood estimates of parameters in models with latent variables (variables that are not directly observed).
+
+Let's break down each part:
+
+1. **Red Curve $(Q(\theta|\theta^k))$**:
+   - This represents the **"Q-function"**. In EM, the Q-function measures the expected log-likelihood of the latent variables given the observed data and the current estimate of the parameters. 
+   
+   Mathematically, it is defined as: $Q(\theta|\theta^k+1) = \sum_z P(z|X,\theta^k) \log P(X,z|\theta) = \mathbf{E}_{Z|X,\theta^k}[log(P(X,z|\theta))]$
+   
+   - In the plot, this curve typically looks like a red mouain-shaped curve. It's showing how likely different values of the latent variables are given the current estimate of the parameters.
+
+2.  **Blue Curve $(L(\theta|X))$**:
+   - This represents the **log-likelihood function**. It measures the likelihood of the observed data given the current estimate of the parameters.
+
+     $$[L(\theta|X) = \log P(X|\theta)$$
+	 
+   - In the plot, this curve is a blue curve. It's showing how likely different values of the parameters are given the observed data.
+
+3. **Tangent Point $(\theta^k)$**:
+
+   - This is where the red and blue curves are tangent. In EM, this point corresponds to the current estimate of the parameters ($\theta^k$) where the log-likelihood function and the Q-function are maximized simultaneously.
+
+4. **Highest Point of Red Curve ($Q(\theta^{k+1}|\theta^k)$)**:
+   - This represents the Q-function evaluated at the point where it's highest given the current estimate of the parameters ($\theta^k$). This is where the Q-function reaches its maximum.
+
+5. **Point on Blue Curve ($L(\theta^{k+1}|X)$)**:
+   - This represents the log-likelihood function evaluated at the point where it's highest given the observed data. This is where the log-likelihood function reaches its maximum.
+
+6. **x-axis ($\theta^k$ and $\theta^{k+1}$)**:
+   - The x-axis represents the parameter space. It spans from the current estimate of the parameters ($\theta^k$) to the updated estimate $(\theta^{k+1})$
+
+The idea of the EM algorithm is to iteratively update the estimates of the parameters. In each iteration, you move from ($\theta^k$) to $(\theta^{k+1}$) where the Q-function and log-likelihood function are maximized.
+
+This process continues until the estimates converge to a stable value, indicating that you've found the maximum likelihood estimates of the parameters.
+
+If you have specific questions about any part of the process or if you'd like further clarification on any point, feel free to ask!
 
 ### E-step
 
@@ -244,7 +277,7 @@ Try as an exercise this derivation
 
 ### M-step
 
-Maximum likelihood on the precedent step.
+
 
 ## HMM at work
 

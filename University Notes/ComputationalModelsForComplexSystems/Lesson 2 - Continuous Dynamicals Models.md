@@ -2,7 +2,7 @@ Date: [[2023-03-03]]
 
 Status: #notes
 
-Tags: [[Complex Systems]], [[A.I. Master Degree @Unipi]]
+Tags: [[Dynamical and Complex Systems]], [[A.I. Master Degree @Unipi]]
 
 # Ordinary Differential Equations 
 
@@ -116,6 +116,8 @@ $$N_{k+1} = N_{k}+ \tau f(N_k)$$
 As we can see we're approximating the solution with a certain error, what is the error?
 The **local discretization error** is $|N(\tau)-N_1|$ and it's in the order of $O(\tau^2)$, like Taylor summation that is the in the case of First Order approximation, this error is quite big, also errors accumulates after $k$ steps at time $t = k\tau$ we have **Global discretization error** $|N(k\tau)-N_k|$ and is in the order of $O(k\tau^2)$ and since $k\tau = t$ is constant is only $O(\tau)$.
 
+![[Pasted image 20230606130822.png]]
+
 ### More explicit methods.
 
 A linear globar discretization error imply very small $\tau$ to be used, so computation becomes very slow.
@@ -131,6 +133,7 @@ Few examples:
 
 - **Self determine** the step size $\tau$ based on thresholds on local and global errors
 - **Dynamically Adjust** the step size $\tau$ during execution (Adaptive Runge-Kutta)
+
 
 ## Instability and stiff systems
 

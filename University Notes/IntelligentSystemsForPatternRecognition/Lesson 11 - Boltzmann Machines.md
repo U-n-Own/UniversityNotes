@@ -4,7 +4,7 @@ Status: #notes
 
 Tags: #ispr[[A.I. Master Degree @Unipi]], [[Boltzmann Machines]], [[Neuroscience]]
 
-# Boltzmann machine are Markov Random Field
+# Boltzmann machine are Conditional Random Field
 
 ![[Pasted image 20230330210021.png]]
 
@@ -12,7 +12,6 @@ Tags: #ispr[[A.I. Master Degree @Unipi]], [[Boltzmann Machines]], [[Neuroscience
 Boltzmann machine are MRF defined over binary RV. Since is a MRF we have an energy function a linear combination of our RV, there are coupling between RV (correlation between them) $M_{ij}S_{i}S_{j}$
 
 ![[Pasted image 20230330205553.png]]
-
 A structural property is absence of self recurrence, no selfloop in this case. The parameters of the model are those of the energy function ($M,b$).
 Boltzmann machines are a type of RNNs the $b_j$ becomes a bias term and the parameter encode interactions bewteen variables (observable and not). But these haven't *recurrent* connectivities.
 The network activity is a sample from *posterior probability given inputs*: visible data.
@@ -124,7 +123,7 @@ $$\frac{\partial\mathcal{L}(M)}{\partial M_{ij}} = -<v_i,v_j>+v_iv_j$$
 Given $L$ visible training patterns
 
 $$
-\mathcal{L}(M)= \frac{1}{L}\sum_{l=1}^L\log P(v_l | M)
+\mathcal{L}(M)= \frac{1}{L}\sum_{l=1}^L\log P(V^l | M)
 $$
 
 $$\log P(V^{l}| M) = \log\frac{exp(-E(v^l))}{Z} \; \Leftarrow \text{Definition of log}$$
@@ -135,13 +134,24 @@ $$log P(V^{l}|M)= -E(v^{l})-logZ$$
 
 $$\frac{\partial log(P(V^{l}| M))}{\partial M_{ij}} = \frac{v_{i}v_{j}-\sum\limits exp^{-E}}{Z\times v_{i},v_{j}}$$
 
-$$\frac{\partial log(P(V^{l}| M))}{\partial M_{ij}} = v_i,v_{j}- \sum\limits_{v}P(U|M)v_{i}v_{j}
-\; \text{but this is almost}\; \to \mathbb{E}[v_i,v_j]_{v\approx P(V|M)} \; \text{This is called this way} <v_i,v_j>$$
+$$\frac{\partial log(P(V^{l}| M))}{\partial M_{ij}} = v_i,v_{j}- \sum\limits_{v}P(V|M)v_{i}v_{j}
+\; \text{but this is an expectation}\; \to \mathbb{E}[v_i,v_j]_{v\approx P(V|M)} \; \text{This is called this way} <v_i,v_j>$$
 
-that is = $v_i^l,v_{j}^l-<v_i,v_j>$
+The $v_i,v_j$ in the summation are pulled out from the model (imagined activation from the NN according to the model belief... a model based Expectation or *expectation under the model distribution*)
 
-$\frac{1}{L}\sum\limits_l$
+We will use the following to mean expectation under a model distribution with brachets meaning expectation and the $M$ below it's saying with respect to what we're running the expectation.
 
+$$
+<v_i,v_j>_M
+$$
+
+that is = $v_i^l,v_{j}^l-<v_i,v_j>_M$ *Stochastic Gradient* (We were trying to differentiate respect single sample... see the $l$) 
+
+Now we want to compute and sum up.
+
+$\frac{1}{L}\sum\limits_l (v_i^l,v_j^l)-<v_i,v_j>_M$
+
+By watching carefully the first bit it's the average correlation between unit i and j over all the dataset, that's another expectation, this time under the data!
 
 when $\frac{\partial\sum\limits log p}{\partial M_{ij}} = <v_{i},v_{j}>_{D}-<v_i,v_{j}>_{M}=0$
 

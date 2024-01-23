@@ -2,7 +2,7 @@ Date: [[2023-03-15]]
 
 Status: #notes
 
-Tags: #ispr[[A.I. Master Degree @Unipi]], [[Variational Inference]]
+Tags: #ispr[[A.I. Master Degree @Unipi]], [[Variational Inference 1]]
 
 # Generating distributions from distribution
 
@@ -36,17 +36,9 @@ We want a version of EM to get solution without knowing the posterior!
 
 ## Kullback-Leibler (KL) Divergence
 
-It measure how much two distribution are "different" each others, more than this is a difference between distributions **non-symmetrical**
+It measure how close two distribution are each others, more than this is a difference between distributions **non-symmetrical**. 
 
 Information theory speaking: we can think of it as measure of information lost when we try to use a distribution Q to approximate another P.
-
-Or better this way
-
-$$
-KL(p || q) = Crossentropy(p,q) - Entropy(p)
-$$
-
-Where the Crossentropy is the average number of bits we use to identify an even from a distribution $q$, that approximate the true distribution $p$.
 
 We want that our $p(z|x)$ in a form posterior like but we don't know $z$. The divergence is ok when both $q,p$ are high, so they are close to zero, if $q$ is high and posterior is low we're not approximiting good enough the posterior. If $q$ is low we don't care.
 
@@ -56,20 +48,9 @@ We want that our $p(z|x)$ in a form posterior like but we don't know $z$. The di
 
 If you linearly combine point and compute $f$ then you're lower bounding by some value: this is for convex
 
-Jensen inequality generally states that 
-
-```ad-important
-For *convex functions* the output of the average input is less than the average output
-```
-
 ![[Pasted image 20230315173321.png]]
 
-
-### Visualizing Jensen Inequality (By [Mutual Information channel](https://www.youtube.com/watch?v=u0_X2hX6DWE))
-
-![[Pasted image 20230713185830.png]]
-
-For example for concave function like the logarithm is the other way around:
+For example
 $$
 \log(\mathbb{E}(X)) \ge \mathbb{E}(\log(X))
 $$

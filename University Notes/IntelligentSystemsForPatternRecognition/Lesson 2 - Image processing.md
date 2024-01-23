@@ -2,7 +2,7 @@
 
 Status: #notes 
 
-Tags: [[Ispr]], [[Image processing]], [[Signal Processing]], [[A.I. Master Degree @Unipi]]
+Tags: [[Ispr]], [[Image processing]], [[Signal Processing 1]], [[A.I. Master Degree @Unipi]]
 
 
 # Images are tensors!

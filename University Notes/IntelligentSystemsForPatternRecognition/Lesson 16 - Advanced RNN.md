@@ -117,7 +117,7 @@ There is this component that we can think about like a scaled dot product or MLP
 
 ![[Pasted image 20230413145300.png]]
 
-### Attention in equations
+### Attention (Bahdanau) in equations
 
 ![[Pasted image 20230413145748.png]]
 

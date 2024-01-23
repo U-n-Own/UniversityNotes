@@ -75,7 +75,7 @@ $$
 $$
 
 
-The $\color{red}{first \; term}$ in the second part is the *[[likelyhood]]* so how much probable is our data  so probability of our model to generate observed data, the $\color{yellow}{yellow \; term}$ at right is called *[[posterior]]*, telling us how to update our beliefs after observing the data and the second $\color{blue}{term}$ at numerator is the *[[prior]]* representing the initial beliefs and assumption on our data, that gives us how good is the model. The $\color{green}{denominator}$ is the *[[marginal likelyhood]]*  but is also called *evidence*.
+The $\color{red}{first \; term}$ in the second part is the *[[likelyhood]]* so how much probable is our data  so probability of our model to generate observed data, the $\color{yellow}{yellow \; term}$ at right is called *[[posterior]]* and the second $\color{blue}{term}$ at numerator is the *[[prior]]*, that gives us how good is the model. The $\color{green}{denominator}$ is the *[[marginal likelyhood]]*  but is also called *evidence*.
 
 A practical application of marginalization over all possible hypotesis is to rewite bayes like this
 ![[Pasted image 20230302154036.png]]

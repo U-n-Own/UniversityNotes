@@ -2,7 +2,7 @@ Date: [[2023-04-16]]
 
 Status: #notes
 
-Tags: [[Complex Systems]]
+Tags: [[Dynamical and Complex Systems]],[[A.I. Master Degree @Unipi]]
 
 # Petri nets models concurrency
 
@@ -14,7 +14,7 @@ Another example is concurrent access to databases...
 
 ## Petri nets : a graphical language
 
-Places are *type* of resources, and trasition are *rules* that makes transformation happen, so moving token from a place to another. This network we can see is an example. Token **lives** in places.
+`Places` are *type* of resources, and `trasition` are *rules* that makes transformation happen, so moving `token` : (*resources*) from a place to another. This network we can see is an example. Token **lives** in places.
 
 Resources can be of any type: state of something
 
@@ -24,6 +24,7 @@ Resources can be of any type: state of something
 ## Transitions
 
 Arcs from place to transition consume tokens and exiting arcs produce resources. A transition is basically chemical reaction or *multiset rewriting rule*.
+
 ![[Pasted image 20230416160039.png]]
 
 ## Firing a transition
@@ -176,9 +177,147 @@ Still if we can decide, or compute in polynomial time the place invariance, spoi
 
 We're intrested in infinite tokens production they're bad, if we can find an invariant in a place, then for sure that place will be bounded!
 
+![[Pasted image 20230416172521.png]]
+
+## Matrix representations
+
+We can represent input and outputs with matrices
+
+![[Pasted image 20230420115319.png]]
+
+![[Pasted image 20230420115329.png]]
+
+### Incidence matrix
+
+The results of the input-output is this matrix
+
+![[Pasted image 20230420115411.png]]
 
 
+### Computing place invariants
 
+We must weights the input and output, also we know that the overall weight must remain constant
+
+![[Pasted image 20230420115439.png]]
+
+For each transition the weight of what i remove should be equal to the weight of what i add, similar to mass conservation property.
+
+![[Pasted image 20230420115628.png]]
+
+This is similar to a system of equation as we can see, we have our incidence matrix and doing scalar product with $i(p)$ of our matrix (the column)
+
+![[Pasted image 20230420115816.png]]
+
+```ad-important
+Theorem: any solution i to the following system of  
+equations is a place-invariant:
+$
+i \times W = 0
+$
+```
+
+![[Pasted image 20230420120108.png]]
+
+#### Identifying place invariant make us prove properties
+
+![[Pasted image 20230420120221.png]]
+
+## Karp and Miller tree
+
+A data structure alternative to rechability graph, remember that it could be infinite, increasing sequence of marking if we have a place in which we accumulate tokens `unbounded places`. The idea is that an infinite sequence of markings can be represent by a special symble for unbounded: $\omega$.
+
+![[Pasted image 20230420121308.png]]
+
+### Monotonicity
+
+Property of a transition or sequence of transitions, the idea is that if we have a transition or sequence, a transition system is monotonic informally: If we have $n$ tokens we can perform a certain number of transitions instead we have more token $N \gt\gt n$. Then we have that we can do the same transitions with more token, and even more.
+
+If $i_2' \gt i_2$: we could identify start of infinit paths
+![[Pasted image 20230420121647.png]]
+
+#### Example
+
+Assuming this as initial markings: if from the last marking we go to the $<1,0,1,1>$, we can see that that one is greater than all of the three before, we identified a transition that bring us to a greater one.
+
+![[Pasted image 20230420122031.png]]
+
+So we could call the last state in this way as we can infer from the graph above with relationships
+![[Pasted image 20230420122259.png]]
+
+![[Pasted image 20230420122200.png]]
+
+![[Pasted image 20230420122331.png]]
+
+If we find a mark that is decreasing we can stop
+
+![[Pasted image 20230420122427.png]]
+
+Since these are trees the transition $t_1$ that bring us to the same state is a branch... well this isn't self looping because if that was possible the number of possibl state would become infinite.
+![[Pasted image 20230420122646.png]]
+
+### Properties of KM tree
+
+![[Pasted image 20230420122949.png]]
+
+### Coverability
+
+![[Pasted image 20230420123041.png]]
+
+##### Another example
+
+![[Pasted image 20230420123518.png]]
+
+```ad-warning
+This is an overapproximation in this case, but it's true in general? Professors says no.
+```
+
+![[Pasted image 20230420123530.png]]
+
+### Downward closure
+
+A Downward closure of a marking is the set: 
+
+$$\downarrow \text{\color{blue}{m}} = \{m' | m' \preccurlyeq \text{\color{blue}{m}}\}$$
+
+And we can have sets of those markings
+![[Pasted image 20230420124823.png]]
+
+![[Pasted image 20230420124838.png]]
+
+Starting from a marking are we able to reach a specific marking? In many cases we're even intrested in specific one but we only want to know if we can reach a mark where something bad can happen, like blocking.
+So we can focus more in coverability than reachability, reaching a marking `grater` than the one from we start from, and since we know that property of monotonicity.
+
+So: Does exist a marking (reachable) which is larger than some marking $b$, starting on a marking $m_0$.
+
+
+![[Pasted image 20230421142325.png]]
+
+We can treat this in two ways.
+
+![[Pasted image 20230421142743.png]]
+
+Where the first idea is to use Coverability set.
+
+#### First idea:
+
+We want to get an overapproximation, the set of marking greter than a certain mark.
+
+![[Pasted image 20230421142829.png]]
+
+Use $Cover(N)$ to approximate the intersection between $Reach(N)$ and $U$.
+If there's no intersection, no marking greater than $b$ can be reached, but if the intersection exists?
+
+![[Pasted image 20230421142925.png]]
+
+We've a marking in common, and if there is one, we have a marking $m'$ greater than that that is in $Reach(N)$.
+Since downward closure of 
+![[Pasted image 20230421143059.png]]
+
+![[Pasted image 20230421143324.png]]
+
+Finally we can derive this
+
+![[Pasted image 20230421143355.png]]
 
 ---
 # References

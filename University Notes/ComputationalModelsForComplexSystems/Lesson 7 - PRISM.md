@@ -2,7 +2,7 @@ Date: @today
 
 Status: #notes
 
-Tags: [[Complex Systems]]
+Tags: [[Dynamical and Complex Systems]]
 
 # A new logic CTL
 

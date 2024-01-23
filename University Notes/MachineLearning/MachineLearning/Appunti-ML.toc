@@ -1,0 +1,66 @@
+\contentsline {chapter}{\numberline {1}Neural Networks}{5}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Regularization}{5}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Stopping Criteria}{6}{section.1.2}%
+\contentsline {section}{\numberline {1.3}VC-Dimension}{6}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Statistical Learning Theory}{7}{subsection.1.3.1}%
+\contentsline {section}{\numberline {1.4}Intro to SVM}{7}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}Linear SVM}{7}{subsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}Quadratic Optimization Problem}{9}{subsection.1.4.2}%
+\contentsline {subsection}{\numberline {1.4.3}Why is this elegant?}{12}{subsection.1.4.3}%
+\contentsline {subsection}{\numberline {1.4.4}Mapping to high-dimensional space}{13}{subsection.1.4.4}%
+\contentsline {subsubsection}{Kernel trick}{13}{section*.2}%
+\contentsline {subsubsection}{Kernel Matrix}{14}{section*.3}%
+\contentsline {subsubsection}{Algebra of Kernels}{15}{section*.4}%
+\contentsline {subsection}{\numberline {1.4.5}SVM and Neuron architecture}{15}{subsection.1.4.5}%
+\contentsline {subsection}{\numberline {1.4.6}Well known Kernels}{16}{subsection.1.4.6}%
+\contentsline {subsection}{\numberline {1.4.7}SVM for non-linear regression}{16}{subsection.1.4.7}%
+\contentsline {subsubsection}{What you should know?}{17}{section*.5}%
+\contentsline {subsection}{\numberline {1.4.8}Practical aspects of SVM}{18}{subsection.1.4.8}%
+\contentsline {subsubsection}{Historical SVM application}{19}{section*.6}%
+\contentsline {subsubsection}{Associate distance to kernels}{20}{section*.7}%
+\contentsline {section}{\numberline {1.5}Bias-Variance}{21}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}Bias-Variance analysis}{22}{subsection.1.5.1}%
+\contentsline {subsubsection}{Recall of statistics}{22}{section*.8}%
+\contentsline {subsubsection}{Decomposition}{22}{section*.9}%
+\contentsline {subsection}{\numberline {1.5.2}Bias-Variance and Regularization}{24}{subsection.1.5.2}%
+\contentsline {chapter}{\numberline {2}Deep Learning}{25}{chapter.2}%
+\contentsline {subsection}{\numberline {2.0.1}Inductive bias arguments}{25}{subsection.2.0.1}%
+\contentsline {subsubsection}{Curse of dimensionality and Bias}{25}{section*.10}%
+\contentsline {subsection}{\numberline {2.0.2}Representation learning}{26}{subsection.2.0.2}%
+\contentsline {subsubsection}{Autoencoders}{27}{section*.11}%
+\contentsline {subsubsection}{AlexNet}{29}{section*.12}%
+\contentsline {subsection}{\numberline {2.0.3}Changing design of Networks for different applications}{29}{subsection.2.0.3}%
+\contentsline {section}{\numberline {2.1}Distributed Representations}{29}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Internal representation and input}{30}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Disentangling concepts}{31}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Beyond Neural Networks}{32}{subsection.2.1.3}%
+\contentsline {subsection}{\numberline {2.1.4}Smoothness trough network}{33}{subsection.2.1.4}%
+\contentsline {subsubsection}{Non overfitting puzzle}{33}{section*.13}%
+\contentsline {subsubsection}{Lottery ticket hypotesis}{34}{section*.14}%
+\contentsline {subsubsection}{Deep Learning technicalities}{34}{section*.15}%
+\contentsline {subsubsection}{Techniques}{35}{section*.16}%
+\contentsline {subsection}{\numberline {2.1.5}ReLu in DL}{37}{subsection.2.1.5}%
+\contentsline {subsection}{\numberline {2.1.6}Batch Normalization}{37}{subsection.2.1.6}%
+\contentsline {section}{\numberline {2.2}Unsupervised Learning and Clustering}{38}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Clustering}{38}{subsection.2.2.1}%
+\contentsline {subsubsection}{Vector Quantization}{38}{section*.17}%
+\contentsline {subsubsection}{Online K-means}{40}{section*.18}%
+\contentsline {subsubsection}{K-means batch algorithm}{40}{section*.19}%
+\contentsline {subsubsection}{Softmax}{41}{section*.20}%
+\contentsline {section}{\numberline {2.3}Recurrent Neural Networks}{41}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Why Sequantial Data are good?}{42}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Memory in RNN}{43}{subsection.2.3.2}%
+\contentsline {subsubsection}{Recurrent Units}{43}{section*.21}%
+\contentsline {subsection}{\numberline {2.3.3}Turing Machine and RNN}{44}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}Proving RNN and TM are equivalent}{44}{subsection.2.3.4}%
+\contentsline {subsection}{\numberline {2.3.5}More properties}{45}{subsection.2.3.5}%
+\contentsline {subsection}{\numberline {2.3.6}Unfolding}{45}{subsection.2.3.6}%
+\contentsline {subsection}{\numberline {2.3.7}Advanced models}{46}{subsection.2.3.7}%
+\contentsline {subsection}{\numberline {2.3.8}Echo state networks}{47}{subsection.2.3.8}%
+\contentsline {subsection}{\numberline {2.3.9}Toward structured domains}{48}{subsection.2.3.9}%
+\contentsline {section}{\numberline {2.4}Structured Domains}{48}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Recurrent approach from sequence to trees}{50}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Recursive Cascade Correlation}{50}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Reservoir computing and Trees}{50}{subsection.2.4.3}%
+\contentsline {subsection}{\numberline {2.4.4}Self-organizing maps}{51}{subsection.2.4.4}%
+\contentsline {subsection}{\numberline {2.4.5}Hidden Tree Markov Models}{51}{subsection.2.4.5}%

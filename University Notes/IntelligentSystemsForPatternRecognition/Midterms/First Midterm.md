@@ -1,4 +1,4 @@
-[[Signal Processing]], [[Music]], [[Assignment]]
+[[Signal Processing 1]], [[Music]], [[Assignment]]
 
 #### From list of **Signal processing assignments**
 

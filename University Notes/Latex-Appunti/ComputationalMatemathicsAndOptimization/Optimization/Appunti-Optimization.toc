@@ -1,0 +1,5 @@
+\contentsline {chapter}{\numberline {1}Lecture 5.2 : How simple function are made and how to optimize them}{5}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Scalar product, norm, distance and balls}{5}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Picturing Multivariate Functions: Tomography}{6}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}Quadratic Functions}{7}{subsection.1.1.2}%
+\contentsline {chapter}{\numberline {2}Lecture 6.1: From optimality condition of quadratic function to gradients}{9}{chapter.2}%

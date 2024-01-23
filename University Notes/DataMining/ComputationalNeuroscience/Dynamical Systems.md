@@ -1,0 +1,1 @@
+I treated these in here [[Computational Models for Complex Systems notes]]

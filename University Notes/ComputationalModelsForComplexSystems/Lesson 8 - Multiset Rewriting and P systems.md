@@ -2,7 +2,7 @@ Date: [[2023-04-06]]
 
 Status: #notes
 
-Tags: [[Complex Systems]], [[A.I. Master Degree @Unipi]]
+Tags: [[Dynamical and Complex Systems]], [[A.I. Master Degree @Unipi]]
 
 # Formal Language Theory intro
 

@@ -1,0 +1,7 @@
+\contentsline {chapter}{\numberline {1}Lecture 1}{5}{chapter.1}%
+\contentsline {subsection}{\numberline {1.0.1}Physical implementation of quantum qubit}{5}{subsection.1.0.1}%
+\contentsline {subsection}{\numberline {1.0.2}Challenges}{5}{subsection.1.0.2}%
+\contentsline {section}{\numberline {1.1}Circuits: Quantum vs Classical}{6}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Reversible circuits}{6}{subsection.1.1.1}%
+\contentsline {section}{\numberline {1.2}Maths of Qubits}{7}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Bloch sphere}{8}{subsection.1.2.1}%

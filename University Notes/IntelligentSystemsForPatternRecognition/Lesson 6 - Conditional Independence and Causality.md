@@ -35,18 +35,12 @@ Let's reason on the structure of the Bayesian networks
 
 Where $\bot$ means conditional independance, for far away variable there is no depedance, how do define far away : you're not a children. 
 So apart parents others isn't needed: eg. children of children aren't needed
-
 ![[Pasted image 20230303152541.png]]
 
 Example of students life : Decisional process in student life.
-
 ![[Pasted image 20230303152814.png]]
 
 Why is that? Party and Study are marginally independant, if something happens to Headache they become dependant from each other, there are two causes for Headache, as soon you know the consequences (Headache) and you're not partying then you know immediately that you're studying, seeing a shared effect makes a connection between them! This is called **Marrying of the parents**. If we take tabs then we actually knows that headache is conditioned so you're also considering party and study. Like a chain of reasoning
-
-## Another example of Conditionally Independance
-
-![[Pasted image 20230712195407.png]]
 
 ## Markov Blanket
 

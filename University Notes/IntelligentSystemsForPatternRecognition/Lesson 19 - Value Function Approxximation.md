@@ -6,7 +6,7 @@ Tags: #ispr
 
 # Reinforcement Learning on the Scale
 
-Until now we've seen that our $v$ and $q$ are vector and matrixes, we can't work all the time with tabular enviroment, state space is finite, but sometimes big or infinite state spaces for example Molecule search : $\gt 10^{60}$
+Until now we've seen that our $v$ and $q$ are vector and matrixes, we can't work all the time with tabular enviroment, state space is finite, but sometime on big or infinite state spaces for example Molecule search : $\gt 10^{60}$
 
 Also tabular representation are bad for generalization, these are basically lookup table, and with Curse of dimensionality becomes very difficult, these are very sample inefficient, for example if we're in a grid being in state $a$ or $b$ is radically different.
 
@@ -30,11 +30,6 @@ Instantaneous error with respect to the sample (episode montecarlo talking), the
 ![[Pasted image 20230420150756.png]]
 
 Neural embedding compress something from high dimensional spaces to small.
-
-## What are the training data?
-
-We use these methods for value prediction simply by passing to them the $s \to u$ of each update as a training example. We then
-interpret the approximate function they produce as an estimated value function.
 
 ## Incremental predictions
 
@@ -66,10 +61,8 @@ Nesting policy evaluation and optimization
 ![[Pasted image 20230420152655.png]]
 
 ## Convergence of prediction
-
 In table lookup all is good all converge and reach optima, in all the ways. As soon we start approximating stuff, things are going bad, but things are good with monte carlo because converges!
 Both off policy than on policy, in bootstrap is when thing gets worse, for TD and both linear-non linear.
-
 ![[Pasted image 20230420152958.png]]
 
 Being fully stochastic make model learning really difficult, because in that way our samples that are Non-IID, "traces", these traces are dependant, so we need to work in another way, using batch methods.
@@ -86,13 +79,12 @@ Performing learning by sampling in the dataset (a buffer), before we were sampli
 
 ## Deep Q-Networks
 
-**Experience replay**: DQNs utilize an *experience replay buffer* to store and sample experiences encountered during interactions with the environment. 
+The model trained to playing atari games was trained with this model, what we do is take an acation and put into the buffer, what happen when the agent play is to store a lot of actions and the we sample from the buffer.
 
-Each experience consists of a tuple (state, action, reward, next state): aka (SAR'S') representing a state transition. By randomly sampling from the replay buffer, the DQN can break the correlation between consecutive experiences and improve data efficiency.
 
-![[Pasted image 20230709164030.png]]
+![[Pasted image 20230420153956.png]]
 
-What are the $W_i^-$ and $W_i$? In the context of Q-Network and Q-learning target our loss is an expectation where the two terms $W_i^-$ and $W_i$ are used to weight the importance of each sample 
+What are the $w_i^-$ and $w_i$? In the context of Q-letwork and Q-learning target our loss is and expectation where the two terms $w_i^-$ and $w_i$ are used to weight the importance of each sample 
 
 ## ATARI-DQN
 
@@ -101,18 +93,15 @@ What are the $W_i^-$ and $W_i$? In the context of Q-Network and Q-learning targe
 ![[Pasted image 20230420154628.png]]
 
 ### Ablation study
-
 Using replay buffer really is better from 3.17 to 240.73 as cumulative reward.
 
 ![[Pasted image 20230420154637.png]]
 
 ## Improvements of DQN
 
-![[Pasted image 20230709165814.png]]
-
 We use the two $w$ the one with minus to stabilize our Network.
 
-If we're learning Q-function we're learning two things: the **V term** and the **A term**, how good is to be in a state and how good is to be in a state with an action, so we train the same network one with A and other with V then we sum up to our Q.
+If we're learning Q-function we're learning the V term and the A term, how good is to be in a state and how good is to be in a state with an action, so we train the same network one with A and other with V then we sum up to our Q.
 
 There are some states where we have to differentiate between the action is really important.
 

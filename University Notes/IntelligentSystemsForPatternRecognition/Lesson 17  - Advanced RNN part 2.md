@@ -4,30 +4,6 @@ Status: #notes
 
 Tags: #ispr[[A.I. Master Degree @Unipi]]
 
-- [[#Skipping state update mitigate vanishing gradients|Skipping state update mitigate vanishing gradients]]
-- [[#Vanishing gradient depends on the shallowness|Vanishing gradient depends on the shallowness]]
-- [[#Hierarchical RNNs|Hierarchical RNNs]]
-	- [[#Hierarchical RNNs#Regulariation : Zoneout|Regulariation : Zoneout]]
-- [[#Clockwork networks|Clockwork networks]]
-- [[#Skip RNNs|Skip RNNs]]
-	- [[#Skip RNNs#Skip models on MNIST|Skip models on MNIST]]
-- [[#Making network efficient by exploiting hierarchical structure|Making network efficient by exploiting hierarchical structure]]
-	- [[#Making network efficient by exploiting hierarchical structure#Recap : 1|Recap : 1]]
-	- [[#Making network efficient by exploiting hierarchical structure#Recap : 2|Recap : 2]]
-	- [[#Making network efficient by exploiting hierarchical structure#Basics of RNN and memory|Basics of RNN and memory]]
-- [[#Memory networks|Memory networks]]
-- [[#End to end memory networks|End to end memory networks]]
-- [[#Extension to the memory networks|Extension to the memory networks]]
-- [[#Memory nets for visual QA with attention|Memory nets for visual QA with attention]]
-- [[#Neural Turing Machines|Neural Turing Machines]]
-	- [[#Neural Turing Machines#Neural controller|Neural controller]]
-	- [[#Neural Turing Machines#Memory read|Memory read]]
-	- [[#Neural Turing Machines#Memory write|Memory write]]
-- [[#NTM Attention focusing|NTM Attention focusing]]
-- [[#Practical uses:|Practical uses:]]
-	- [[#Practical uses:#Take home lesson|Take home lesson]]
-
-
 # Optimizing memory: Neural reasoners 
 
 Let's start with hirarchical and multiscale Recurrent Networks, like a working memory for next predictions, we talked about gated RNN claiming they can solve a problem in long term dependancies and vanishing gradients, learning to solve complex tasks that require storage and recall of information is not achievable.

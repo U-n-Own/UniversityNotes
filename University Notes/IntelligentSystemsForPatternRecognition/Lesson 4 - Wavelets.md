@@ -2,7 +2,7 @@ Date: [[2023-03-01]]
 
 Status: #notes
 
-Tags: [[Signal Processing]],[[IntelligentSystemsForPatternRecognition]], [[A.I. Master Degree @Unipi]]
+Tags: [[Signal Processing 1]],[[IntelligentSystemsForPatternRecognition]], [[A.I. Master Degree @Unipi]]
 
 # Limitations of DFT
 

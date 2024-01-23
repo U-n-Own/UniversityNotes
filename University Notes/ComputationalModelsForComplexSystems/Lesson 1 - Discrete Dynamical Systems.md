@@ -2,7 +2,7 @@ Date: [[2023-03-02]]
 
 Status: #notes
 
-Tags: [[Complex Systems]], [[A.I. Master Degree @Unipi]]
+Tags: [[Dynamical and Complex Systems]], [[A.I. Master Degree @Unipi]]
 
 # Modeling systems
 

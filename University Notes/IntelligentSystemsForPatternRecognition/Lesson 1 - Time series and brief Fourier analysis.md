@@ -2,7 +2,7 @@
 
 Status: #notes 
 
-Tags: [[Ispr]], [[Time Series]], [[Signal Processing]], [[Probability]], [[A.I. Master Degree @Unipi]]
+Tags: [[Ispr]], [[Time Series]], [[Signal Processing 1]], [[Probability]], [[A.I. Master Degree @Unipi]]
 
 
 Slides from professor of this lesson can be found [here](https://elearning.di.unipi.it/pluginfile.php/54174/mod_resource/content/3/ISPR_2_timeseries.pdf)

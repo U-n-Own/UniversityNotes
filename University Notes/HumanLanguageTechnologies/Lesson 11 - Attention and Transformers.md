@@ -22,7 +22,7 @@ Provides a solution for this problem of bottleneck, the core idea is to *watch t
 What attention provide:
 
 
-# Attention behind machine translation
+## Attention behind machine translation
 
 Sequence to sequence are good for transduction (seq-to-seq), these have limits, these are sequential so we have to go one by one and we have bottleneck.
 
@@ -45,7 +45,7 @@ There are two way of seeing attention:
 Intutition:
 - The weighted sum is a *Selective summary*, and attention is a way to obtain a fixed-size representation of an arbitrary set of representations.
 
-### Formally
+#### Formally
 
 We have values $v_1,...v,_n$ and some keys $k_{1},..., k_{n}$
 
@@ -61,7 +61,7 @@ Attention involves :
 - Multiplicative attention: introduce a matrix that multiply query and keys for this matrix
 - Additive attention
 
-## Issues?
+#### Issues?
 
 - With recurrent models
 
@@ -82,8 +82,14 @@ Treating each word representation as a query to acces and incorporate set of val
 This can be tought like a query using hashtables!
 
 
-Standard Attention![[Pasted image 20230328095551.png]]
+Standard Attention
+
+![[Pasted image 20230328095551.png]]
+
+---
+
 Self-Attention
+
 ![[Pasted image 20230328095619.png]]
 
 So we can think of that as a memory.
@@ -132,7 +138,7 @@ But how is done this vector?
 
 ### Position repreentation with sinusoids
 
-The vector is concatenate sinusoidal functions of varying periods, giving us an index in sequence made this way
+The vector is concatenate sinusoida![[Pasted image 20230328102730.png]]l functions of varying periods, giving us an index in sequence made this way
 ![[Pasted image 20230328102730.png]]
 - Pros: periodicity indicate that aboslute position isn't important and we can extrapolate longer sequences as period restart
 - Cons : Not learnable

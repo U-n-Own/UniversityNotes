@@ -71,7 +71,7 @@ Intuitively memorizing $n$ datapoints is about satisfying $n$ equations, so orde
 Showed two layer neural net with threshold activation only need $p \approx O(n)$ to memorize binary labels
 ```
 
-This is showed for ReLU and [[Neural Tangent Kernels]]: process of training with GD is a [[Dynamical and Complex Systems]], you update weights as you go further, and these learning dynamics are modelled by [[Differential Equations]] on how updates of gradient descent would work. Increasing size of neural net to infinite width the dynamic of learning has a closed form solution that is a [[Kernel Method]].
+This is showed for ReLU and [[Neural Tangent Kernels]]: process of training with GD is a [[Dynamical and Complex Systems]], you update weights as you go further, and these learning dynamics are modelled by [[Differential Equations 1]] on how updates of gradient descent would work. Increasing size of neural net to infinite width the dynamic of learning has a closed form solution that is a [[Kernel Method]].
 
 ### Real example
 ![[Pasted image 20230506180432.png]]

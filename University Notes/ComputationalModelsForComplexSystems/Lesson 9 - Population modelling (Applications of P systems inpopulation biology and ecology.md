@@ -2,7 +2,7 @@ Date: [[2023-04-13]]
 
 Status: #notes
 
-Tags: [[Complex Systems]]
+Tags: [[Dynamical and Complex Systems]]
 
 # Modelling populations: P systems
 

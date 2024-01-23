@@ -2,7 +2,7 @@ Date: [[2023-03-24]]
 
 Status: #notes
 
-Tags: [[Complex Systems]],[[A.I. Master Degree @Unipi]]
+Tags: [[Dynamical and Complex Systems]],[[A.I. Master Degree @Unipi]]
 
 # Alternative Transition Systems
 

@@ -2,7 +2,7 @@ Date: @today
 
 Status: #notes
 
-Tags: [[Complex Systems]], [[A.I. Master Degree @Unipi]], [[Probability]]
+Tags: [[Dynamical and Complex Systems]], [[A.I. Master Degree @Unipi]], [[Probability]]
 
 # Simulating stochastic reactions
 
