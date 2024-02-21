@@ -1,1 +1,3 @@
 Assignments/** linguist-vendored
+
+*.ipynb linguist-vendored
