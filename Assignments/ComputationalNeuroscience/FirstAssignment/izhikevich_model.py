@@ -23,7 +23,7 @@ class IzhikevichModel():
                                 u <- c, w <- w + d  
     """
 
-    def __init__(self, a, b, c, d, I, w, u = -65) -> None:
+    def __init__(self, a, b, c, d, I, w, u = -65, excitability_class=None, tau = 0.25) -> None:
         
         self.a = a #0.02
         self.b = b #0.2
@@ -34,19 +34,34 @@ class IzhikevichModel():
         self.u = u
         self.w = w
         
-        self.dt = 0.25
-    
+        self.dt = tau
+     
+        # None for all the other if chages i change behavior of u
+        self.excitability_class = excitability_class
+     
     def dudt(self, I, t):
         """
         dudt is the first equation of the Izhikevich model actually not multiplying here by dt.
         """
-        return 0.04*self.u**2 + 5*self.u + 140 - self.w + I
+        if self.excitability_class == None or self.excitability_class != 1:
+            return 0.04*self.u**2 + 5*self.u + 140 - self.w + I
+        elif self.excitability_class == 1:
+            return self.dudt_c1(I, t)
+         
+    def dudt_c1(self, I, t):
+        """
+        for class 1 excitability
+        """    
+        return 0.04*(self.u**2) + 4.1*self.u + 108 - self.w + I
     
     def dwdt(self):
         """
         dwdt is the second equation of the Izhikevich model actually not multiplying here by dt.
         """
-        return self.a*(self.b*self.u - self.w)
+        if self.excitability_class == None or self.excitability_class != 2:
+            return self.a*(self.b*self.u - self.w)
+        elif self.excitability_class == 2:
+            return self.a*(self.b*self.u+65)
     
     
     def simulate(self, I, T):

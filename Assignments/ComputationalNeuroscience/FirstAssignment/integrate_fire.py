@@ -24,7 +24,7 @@ class IntegrateAndFireNeuron():
         # Time constant
         self.tau = 10 
         # Time step
-        self.dt = 1
+        self.dt = 0.1
 
     def du_dt(self, u, t, I):
         """Function to calculate the derivative of the membrane potential"""
