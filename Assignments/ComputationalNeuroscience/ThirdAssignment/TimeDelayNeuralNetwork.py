@@ -40,7 +40,7 @@ class TimeDelayNeuralNetwork(nn.Module):
         
         #self.fc_input_size = hidden_size * pool_output_size
         
-        self.pool = nn.MaxPool1d(pool_size, stride=pool_stride)
+        #self.pool = nn.MaxPool1d(pool_size, stride=pool_stride)
         #self.pool = nn.AvgPool1d(pool_size, stride=pool_stride)
         
         self.dropout = nn.Dropout(dropout)
