@@ -49,6 +49,9 @@ class HebbianLearning():
         
     def _update_oja(self, v, u):
         self.w += self.eta * ((self.alpha * v) * (u - self.alpha * v * self.w))
+        
+    def _update_subtractive_normalization(self, v, u):
+        self.w += self.eta * (v * u - (v * np.dot(v, self.w)))
             
     # Simulate the learning
     def train_hebbian_simple(self, data, epochs=100):
@@ -68,6 +71,13 @@ class HebbianLearning():
 
     # Changing the Hebbian learning rule to be Oja's rule
     def train_oja(self, data, epochs=100):
+        """ 
+        Oja's rule for learning
+        
+        With Oja's we're just trying to add a constraint for the weights so that 
+        growth is bounded. This is a stable learning rule.
+        
+        """
            
         w_shape = self.w.shape 
         # Initialize the weight history
@@ -81,6 +91,28 @@ class HebbianLearning():
                 w_history[epoch] = self.w
 
         return w_history
+    
+    def train_subtractive_normalization(self, data, epochs=100):
+        """
+        Subtractive normalization rule
+        
+        In this rule we are doing just like the standard Hebb v*u but we are subtracting a normalized version of the weights
+        
+        v*u - [v(n*u)n/N_u]
+        
+        Here the sum of weights will remain constant
+        """
+        w_history = np.zeros((len(data), *self.w.shape))
+        
+        # Simulate with a time step dynamics of tau_w
+        for epoch in range(epochs):
+            for u in data:
+                v = self.predict(u)
+                self._update_subtractive_normalization(v, u)
+                w_history[epoch] = self.w
+            
+        return w_history
+    
     
     def predict(self, u):
         # matrix w 
