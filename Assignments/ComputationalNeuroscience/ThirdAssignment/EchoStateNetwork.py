@@ -3,7 +3,34 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
 class EchoStateNetwork:
-    def __init__(self, N_h=4000, N_x=1, rho_enforced=1.1, omega_in=1.1, washout=1000):
+    """Echo State Network class.
+    
+    Parameters
+    ----------
+    N_h : int
+        Number of hidden units.
+    N_x : int
+        Number of input units.
+    rho_enforced : float
+        Spectral radius of the recurrent weight matrix.
+    omega_in : float
+        Input scaling.
+    washout : int
+        Number of time steps to washout.
+    W_x : np.ndarray
+        Input weight matrix.
+    W_h : np.ndarray
+        Recurrent weight matrix.
+    H : list
+        List to store hidden states.
+    W_out : np.ndarray
+        Output weight matrix.
+    state : np.ndarray
+        Hidden state.
+    bias : np.ndarray
+        Bias vector.
+    """
+    def __init__(self, N_h=500, N_x=1, rho_enforced=1.1, omega_in=1.1, washout=1000):
         self.N_h = N_h
         self.N_x = N_x
         self.rho_enforced = rho_enforced
