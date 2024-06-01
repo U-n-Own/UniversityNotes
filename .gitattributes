@@ -1,4 +1,5 @@
-Assignments/** linguist-vendored
+#Assignments/** linguist-vendored
+# do not linguist vendored all assignment but only the .ipyb
 
 *.ipynb linguist-vendored
 *.tex linguist-vendored
