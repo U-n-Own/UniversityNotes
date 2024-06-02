@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import Ridge
 
 class EchoStateNetwork:
     """Echo State Network class.
@@ -41,6 +42,7 @@ class EchoStateNetwork:
         self.bias = np.random.uniform(-1, 1, (N_h, N_x))
         self.W_x = self._initialize_W_x()
         self.W_h = self._initialize_W_h()
+        self.W_out = None
         self.H = []
         self.alternative_method = alternative_method
 
@@ -53,7 +55,7 @@ class EchoStateNetwork:
         recurrent_rho = max(abs(np.linalg.eigvals(W_r)))
         return W_r * (self.rho_enforced / recurrent_rho)
 
-    def fit(self, train_input, target, epochs=4000, delay=0):
+    def fit(self, train_input, target, epochs=4000, delay=0, test=False):
         """
         Here we will do all the necessary step to make work our ESN
         
@@ -64,10 +66,10 @@ class EchoStateNetwork:
         3. Then we train the *Readout* layer using the collected hidden states and the target
         by using the pseudo-inverse, but we can use any other method 
         like ridge regression or Linear Regression
-        """ 
+        """  
         for t in range(epochs):
             self.state = np.tanh((self.W_x @ train_input[t]).reshape(-1,1) + (self.W_h @ self.state) + self.bias)
-            self.H.append(self.state)
+            self.H.append(self.state.copy())
         
         if delay > 0:
             self.H = self.H[self.washout:-delay]
@@ -78,14 +80,30 @@ class EchoStateNetwork:
         self.H = np.array(self.H).reshape(-1, self.N_h) 
         
         # Washout target
-        #target = target[self.washout:epochs]
+        target = target[self.washout:epochs]
+        self.H = self.H[self.washout:]
+        
         if self.alternative_method == 'classification':
             self._fit_classificator(target)
+        elif self.alternative_method == 'ridge':
+            self.regressor = Ridge(alpha=1e-6)
+            self.regressor.fit(self.H, target)
         else:
             self.W_out = np.linalg.pinv(self.H) @ target
+
         
     def predict(self):
         return self.H @ self.W_out
+    
+    def predict_test(self, inputs):
+        
+        predictions = np.zeros(inputs.shape[0])
+        for t in range(len(inputs)):
+            self.state = np.tanh((self.W_x @ inputs[t]).reshape(-1,1) + (self.W_h @ self.state) + self.bias)
+            predictions[t] = self.regressor.predict(self.state.T)
+            
+        return predictions
+            
 
     def plot_prediction(self, target, prediction):
         plt.figure(figsize=(30,12))
