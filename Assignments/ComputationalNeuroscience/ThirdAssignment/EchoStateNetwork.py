@@ -72,7 +72,9 @@ class EchoStateNetwork:
             self.H.append(self.state.copy())
         
         if delay > 0:
-            self.H = self.H[self.washout:-delay]
+            #self.H = self.H[self.washout:-delay]
+            self.H = self.H[self.washout:]
+            target = target[self.washout:epochs]
         else:
             self.H = self.H[self.washout:]
             target = target[self.washout:epochs]
