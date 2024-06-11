@@ -52,7 +52,7 @@ class HopfieldNet():
         return (1/len(pattern))*np.dot(pattern, recall_pattern)
     
       
-    def recall(self, pattern, steps=100, dimension=32, bias=0.7, by_frame=False, compute_energy=False):
+    def recall(self, pattern, steps=100, dimension=32, bias=0.7, by_frame=False, compute_energy=False, true_pattern=None):
         """
         Recall the pattern from the network, given a pattern choose randomly a
         neuron and save the update then do it for each neuron at least once
@@ -82,14 +82,14 @@ class HopfieldNet():
                 
                 if by_frame:
                     frames.append(new_pattern)
-
-                # compute overlap
-                flattened_old = previous_pattern.flatten()
-                flattened_new = new_pattern.flatten()
                 
                 if compute_energy:
-                    overlap.append(self.overlap(flattened_old, flattened_new))
-        
+                    # compute overlap
+                    flattened_old = previous_pattern.flatten()
+                    flattened_new = new_pattern.flatten()
+                    true_pattern = true_pattern.flatten()
+                    
+                    overlap.append(self.overlap(flattened_new, true_pattern))
                     # compute the energy of the pattern
                     energy.append(self.energy(pattern))
                 
