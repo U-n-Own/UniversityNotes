@@ -9,6 +9,6 @@
 *.pt
 *.csv
 *.Identifier
-*.html
+*!"Presentation"*.html
 /UniversityNotes/Assignments/ContinualLearning/CourseRepo/
 /UniversityNotes/Animations/
