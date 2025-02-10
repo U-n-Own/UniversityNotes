@@ -1,0 +1,10 @@
+@article{article,
+author = {Wingström, Roosa and Hautala, Johanna and Lundman, Riina},
+year = {2022},
+month = {08},
+pages = {1-17},
+title = {Redefining Creativity in the Era of AI? Perspectives of Computer Scientists and New Media Artists},
+volume = {36},
+journal = {Creativity Research Journal},
+doi = {10.1080/10400419.2022.2107850}
+}
