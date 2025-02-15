@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.12.27)  13 FEB 2025 18:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.12.27)  15 FEB 2025 19:22
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -929,33 +929,60 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<images/deep_architectures.png, id=69, 553.46774pt x 194.52675pt>
+<images/deep_architectures.png, id=74, 553.46774pt x 194.52675pt>
 File: images/deep_architectures.png Graphic file (type png)
 <use images/deep_architectures.png>
 Package pdftex.def Info: images/deep_architectures.png  used on input line 97.
 (pdftex.def)             Requested size: 221.78923pt x 77.95178pt.
  [2 <./images/deep_architectures.png>] [3]
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 275.
- [4] [5] (./Notes.aux)
+<images/RON1L_MC.png, id=107, 931.98187pt x 459.96844pt>
+File: images/RON1L_MC.png Graphic file (type png)
+<use images/RON1L_MC.png>
+Package pdftex.def Info: images/RON1L_MC.png  used on input line 243.
+(pdftex.def)             Requested size: 221.78923pt x 109.46121pt.
+<images/RON1L_MC_2.png, id=108, 779.91376pt x 377.91188pt>
+File: images/RON1L_MC_2.png Graphic file (type png)
+<use images/RON1L_MC_2.png>
+Package pdftex.def Info: images/RON1L_MC_2.png  used on input line 249.
+(pdftex.def)             Requested size: 221.78923pt x 107.46957pt.
+Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 259.
+ [4 <./images/RON1L_MC.png> <./images/RON1L_MC_2.png>]
+<images/RON10L_MC.png, id=124, 867.24pt x 433.62pt>
+File: images/RON10L_MC.png Graphic file (type png)
+<use images/RON10L_MC.png>
+Package pdftex.def Info: images/RON10L_MC.png  used on input line 278.
+(pdftex.def)             Requested size: 221.78923pt x 110.89253pt.
+ [5 <./images/RON10L_MC.png>]
+<images/distance_reservoir_states DeepRandomizedOscillatorsNetwork_10_layers.png, id=137, 867.24pt x 433.62pt>
+File: images/distance_reservoir_states DeepRandomizedOscillatorsNetwork_10_layers.png Graphic file (type png)
+<use images/distance_reservoir_states DeepRandomizedOscillatorsNetwork_10_layers.png>
+Package pdftex.def Info: images/distance_reservoir_states DeepRandomizedOscillatorsNetwork_10_layers.png  used on input line 331.
+(pdftex.def)             Requested size: 399.21791pt x 199.61317pt.
+<images/distance_reservoir_states_DeepReservoir_10_layers.png, id=138, 867.24pt x 433.62pt>
+File: images/distance_reservoir_states_DeepReservoir_10_layers.png Graphic file (type png)
+<use images/distance_reservoir_states_DeepReservoir_10_layers.png>
+Package pdftex.def Info: images/distance_reservoir_states_DeepReservoir_10_layers.png  used on input line 338.
+(pdftex.def)             Requested size: 399.21791pt x 199.61317pt.
+ [6 <./images/distance_reservoir_states DeepRandomizedOscillatorsNetwork_10_layers.png> <./images/distance_reservoir_states_DeepReservoir_10_layers.png>] [7] (./Notes.aux)
 Package rerunfilecheck Info: File `Notes.out' has not changed.
-(rerunfilecheck)             Checksum: 78EB85D1B1F9E5A02263DFB55C00EE05;1770.
+(rerunfilecheck)             Checksum: 31F12CCBBD2231FEEE7B3F9168B2E420;2056.
 Package logreq Info: Writing requests to 'Notes.run.xml'.
 \openout1 = `Notes.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 32072 strings out of 480247
- 602658 string characters out of 5896105
- 1269421 words of memory out of 5000000
- 49499 multiletter control sequences out of 15000+600000
- 478891 words of font info for 65 fonts, out of 8000000 for 9000
+ 32145 strings out of 480247
+ 604864 string characters out of 5896105
+ 1270909 words of memory out of 5000000
+ 49555 multiletter control sequences out of 15000+600000
+ 479589 words of font info for 67 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  99i,12n,94p,1358b,1342s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on Notes.pdf (5 pages, 294234 bytes).
+Output written on Notes.pdf (7 pages, 798396 bytes).
 PDF statistics:
- 220 PDF objects out of 1000 (max. 8388607)
- 169 compressed objects within 2 object streams
- 31 named destinations out of 1000 (max. 500000)
- 98 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 257 PDF objects out of 1000 (max. 8388607)
+ 194 compressed objects within 2 object streams
+ 42 named destinations out of 1000 (max. 500000)
+ 131 words of extra memory for PDF output out of 10000 (max. 10000000)
 

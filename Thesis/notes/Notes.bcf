@@ -2350,10 +2350,11 @@
     <bcf:citekey order="4">memorycapacity</bcf:citekey>
     <bcf:citekey order="5">memorycapacity</bcf:citekey>
     <bcf:citekey order="6">GALLICCHIO201787</bcf:citekey>
-    <bcf:citekey order="7">article</bcf:citekey>
-    <bcf:citekey order="8">pmlr-v238-ceni24a</bcf:citekey>
-    <bcf:citekey order="9">GALLICCHIO201787</bcf:citekey>
-    <bcf:citekey order="10">memorycapacity</bcf:citekey>
+    <bcf:citekey order="7">GALLICCHIO201787</bcf:citekey>
+    <bcf:citekey order="8">article</bcf:citekey>
+    <bcf:citekey order="9">pmlr-v238-ceni24a</bcf:citekey>
+    <bcf:citekey order="10">GALLICCHIO201787</bcf:citekey>
+    <bcf:citekey order="11">memorycapacity</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nty">
