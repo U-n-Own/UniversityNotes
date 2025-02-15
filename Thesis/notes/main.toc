@@ -1,9 +1,0 @@
-\babel@toc {english}{}\relax 
-\contentsline {chapter}{\numberline {1}Introduction}{7}{chapter.3}%
-\contentsline {section}{\numberline {1.1}Stack RNN}{7}{section.4}%
-\contentsline {section}{\numberline {1.2}Recurrent Online Neural Networks (RON)}{8}{section.6}%
-\contentsline {chapter}{\numberline {2}Background}{9}{chapter.7}%
-\contentsline {chapter}{\numberline {3}Problem Statement and Related works}{11}{chapter.8}%
-\contentsline {chapter}{\numberline {4}Stacking RON Layers}{13}{chapter.9}%
-\contentsline {chapter}{\numberline {5}Implementation and Experimental results}{15}{chapter.10}%
-\contentsline {chapter}{\numberline {6}Conclusion and Future Works}{17}{chapter.11}%
