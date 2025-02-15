@@ -5,3 +5,5 @@
 *.tex linguist-vendored
 *.html linguist-vendored
 *.ps linguist-vendored
+
+Thesis/notes/** linguist-vendored --include * --exclude '*.tex' --exclude '*.pdf'
