@@ -7,6 +7,8 @@
 #include <avx_mathfun.h>
 
 
+//#include <immintrin.h>
+
 void softmax_avx(const float *input, float *output, size_t K) {
 
 	// Find the maximum to stabilize the computation of the exponential
@@ -62,7 +64,7 @@ void softmax_avx(const float *input, float *output, size_t K) {
 }
 
 // Version that takes into account alignment, scalar remainder handling, and horizontal vector reductions
-void softmax_avx_optimized(const float* __restrict input, float* __restrict output, size_t K) {
+void softmax_avx_optimized(const float* __restrict input, float* __restrict output, size_t K){
     if (K == 0) return;
 
     // Align input/output to 32-byte boundaries (caller's responsibility)
@@ -135,6 +137,96 @@ void softmax_avx_optimized(const float* __restrict input, float* __restrict outp
         output[i] /= sum;
 }
 
+// Another optimization that include the use of FMA to calculate the exponential
+void softmax_avx_fma(const float* __restrict input, float* __restrict output, size_t K) {
+    if (K == 0) return;
+    
+    constexpr size_t VEC_SIZE = 8; // 8 floats per AVX vector
+    
+    // Stage 1: Find maximum value (vectorized)
+    float max_val = -std::numeric_limits<float>::infinity();
+    __m256 max_v = _mm256_set1_ps(max_val);
+    size_t i = 0;
+
+    // Vectorized max with unaligned loads
+    for (; i + VEC_SIZE <= K; i += VEC_SIZE) {
+        __m256 data = _mm256_loadu_ps(input + i);
+        max_v = _mm256_max_ps(max_v, data);
+    }
+
+    // Horizontal reduction for max
+    alignas(32) float max_buf[VEC_SIZE];
+    _mm256_store_ps(max_buf, max_v);
+    for (size_t j = 0; j < VEC_SIZE; j++)
+        max_val = std::max(max_val, max_buf[j]);
+
+    // Scalar remainder
+    for (; i < K; i++)
+        max_val = std::max(max_val, input[i]);
+
+    // Stage 2: Compute exponentials (vectorized)
+    __m256 max_vec = _mm256_set1_ps(max_val);
+    i = 0;
+    for (; i + VEC_SIZE <= K; i += VEC_SIZE) {
+        __m256 data = _mm256_loadu_ps(input + i);
+        __m256 shifted = _mm256_sub_ps(data, max_vec);
+        __m256 exp = exp256_ps(shifted);
+        _mm256_storeu_ps(output + i, exp);
+    }
+
+    // Scalar remainder
+    for (; i < K; i++)
+        output[i] = expf(input[i] - max_val);
+
+    // Stage 3: Sum exponentials (vectorized)
+    float sum = 0.0f;
+    __m256 sum_v = _mm256_setzero_ps();
+    i = 0;
+    for (; i + VEC_SIZE <= K; i += VEC_SIZE) {
+        __m256 data = _mm256_loadu_ps(output + i);
+        sum_v = _mm256_add_ps(sum_v, data);
+    }
+
+    // Horizontal reduction for sum
+    alignas(32) float sum_buf[VEC_SIZE];
+    _mm256_store_ps(sum_buf, sum_v);
+    for (size_t j = 0; j < VEC_SIZE; j++)
+        sum += sum_buf[j];
+
+    // Scalar remainder
+    for (; i < K; i++)
+        sum += output[i];
+
+    // Stage 4: FMA-accelerated normalization
+    const __m256 sum_vec = _mm256_set1_ps(sum);
+    
+    // Fast reciprocal using FMA-based Newton-Raphson
+    // inv_sum ≈ 1/sum with 1 Newton iteration:
+    // inv_sum = inv_sum * (2 - sum * inv_sum)
+    __m256 inv_sum = _mm256_rcp_ps(sum_vec);    // Approximate reciprocal
+    inv_sum = _mm256_fnmadd_ps(sum_vec, inv_sum, _mm256_set1_ps(2.0f)); // 2 - sum*inv_sum
+    inv_sum = _mm256_mul_ps(inv_sum, _mm256_rcp_ps(sum_vec));  // inv_sum * (2 - sum*inv_sum)
+
+    i = 0;
+    for (; i + VEC_SIZE <= K; i += VEC_SIZE) {
+        __m256 data = _mm256_loadu_ps(output + i);
+        // FMA not used directly here, but reciprocal computation uses FMA
+        data = _mm256_mul_ps(data, inv_sum);
+        _mm256_storeu_ps(output + i, data);
+    }
+
+    // Scalar remainder
+    const float inv_sum_scalar = 1.0f / sum;  // Regular division for remainder
+    for (; i < K; i++)
+        output[i] *= inv_sum_scalar;
+}
+
+void printResult(std::vector<float> &v, size_t K) {
+	for(size_t i=0; i<K; ++i) {
+		std::fprintf(stderr, "%f\n",v[i]);
+	}
+}
+
 std::vector<float> generate_random_input(size_t K, float min = -1.0f, float max = 1.0f) {
     std::vector<float> input(K);
     //std::random_device rd;
@@ -147,48 +239,44 @@ std::vector<float> generate_random_input(size_t K, float min = -1.0f, float max 
     return input;
 }
 
-void printResult(std::vector<float> &v, size_t K) {
-	for(size_t i=0; i<K; ++i) {
-		std::fprintf(stderr, "%f\n",v[i]);
-	}
-}
-
-
 int main(int argc, char *argv[]) {
 	if (argc == 1) {
-		std::printf("use: %s K [1]\n", argv[0]);
+		std::printf("use: %s K [print] [optimized]\n", argv[0]);
 		return 0;		
 	}
-	size_t K=0;
-	if (argc >= 2) {
-		K = std::stol(argv[1]);
-	}
-	bool print=false;
-	if (argc == 3) {
-		print=true;
-	}	
-	bool optimized=false;
-	if (argc == 4) {
-		optimized=true;
-	}
-	std::vector<float> input=generate_random_input(K);
+	size_t K = std::stol(argv[1]);
+	bool print = (argc >= 3) ? std::string(argv[2]) == "true" : false;
+	bool optimized = (argc >= 4) ? std::string(argv[3]) == "true" : false;
+
+	std::vector<float> input = generate_random_input(K);
 	std::vector<float> output(K);
 
+	/*
 	float* input_aligned = static_cast<float*>(aligned_alloc(32, K * sizeof(float)));
 	float* output_aligned = static_cast<float*>(aligned_alloc(32, K * sizeof(float)));
+	*/
 
+	float* input_aligned = (float*)_mm_malloc(K * sizeof(float), 32);
+	float* output_aligned = (float*)_mm_malloc(K * sizeof(float), 32);
+	
 	TIMERSTART(softime_avx);
-	if (optimized)
+	if (optimized) {
 		//softmax_avx(input.data(), output.data(), K);
+		printf("Optimized version avx\n");
 		softmax_avx_optimized(input_aligned, output_aligned, K);
-	else
+	} else {
+		printf("Standard avx\n");
 		softmax_avx(input.data(), output.data(), K);
+	}
 	TIMERSTOP(softime_avx);
 	
-	free(input_aligned);
-	free(output_aligned);
-	
 
+	_mm_free(input_aligned);
+	_mm_free(output_aligned);
+	// why this free works as well? Valgrind don't detect leaks
+	//free(input_aligned);
+	//free(output_aligned);
+	
 	// print the results on the standard output
 	if (print) {
 		printResult(output, K);

@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
 	std::vector<float> output(K);
 
 	TIMERSTART(softime_auto);
-	softmax_auto(input.data(), output.data(), K);
+	softmax_auto_p(input.data(), output.data(), K);
 	TIMERSTOP(softime_auto);
 	
 	// print the results on the standard output
