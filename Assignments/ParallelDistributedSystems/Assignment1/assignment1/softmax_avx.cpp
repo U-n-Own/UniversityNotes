@@ -74,7 +74,7 @@ void softmax_avx_optimized(const float* __restrict input, float* __restrict outp
 
     // Vectorized max (aligned)
     for (; i + VEC_SIZE <= K; i += VEC_SIZE) {
-        __m256 data = _mm256_loadu_ps(input + i);
+        __m256 data = _mm256_load_ps(input + i);
         max_v = _mm256_max_ps(max_v, data);
     }
 
@@ -92,9 +92,9 @@ void softmax_avx_optimized(const float* __restrict input, float* __restrict outp
     __m256 max_vec = _mm256_set1_ps(max_val);
     i = 0;
     for (; i + VEC_SIZE <= K; i += VEC_SIZE) {
-        __m256 data = _mm256_loadu_ps(input + i);
+        __m256 data = _mm256_load_ps(input + i);
         __m256 exp_data = exp256_ps(_mm256_sub_ps(data, max_vec));
-        _mm256_storeu_ps(output + i, exp_data);
+        _mm256_store_ps(output + i, exp_data);
     }
 
     // Scalar remainder
@@ -106,13 +106,13 @@ void softmax_avx_optimized(const float* __restrict input, float* __restrict outp
     __m256 sum_v = _mm256_setzero_ps();
     i = 0;
     for (; i + VEC_SIZE <= K; i += VEC_SIZE) {
-        __m256 data = _mm256_loadu_ps(output + i);
+        __m256 data = _mm256_load_ps(output + i);
         sum_v = _mm256_add_ps(sum_v, data);
     }
 
     // Horizontal sum reduction
     alignas(32) float sum_buffer[VEC_SIZE];
-    _mm256_storeu_ps(sum_buffer, sum_v);
+    _mm256_store_ps(sum_buffer, sum_v);
     for (size_t j = 0; j < VEC_SIZE; ++j)
         sum += sum_buffer[j];
 
@@ -124,9 +124,9 @@ void softmax_avx_optimized(const float* __restrict input, float* __restrict outp
     __m256 inv_sum = _mm256_set1_ps(1.0f / sum);
     i = 0;
     for (; i + VEC_SIZE <= K; i += VEC_SIZE) {
-        __m256 data = _mm256_loadu_ps(output + i);
+        __m256 data = _mm256_load_ps(output + i);
         data = _mm256_mul_ps(data, inv_sum);
-        _mm256_storeu_ps(output + i, data);
+        _mm256_store_ps(output + i, data);
     }
 
     // Scalar remainder
