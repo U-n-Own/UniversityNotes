@@ -1,7 +1,7 @@
 CXX                = g++ -std=c++17
 OPTFLAGS	   = -O3
 AUTOFLAGS          = -march=native -ffast-math #-fprofile-generate -fprofile-use -fopt-info-vec-all 
-AVXFLAGS           = -mavx -ffast-math -mfma #-fprofile-generate -fprofile-use -fopt-info-vec-all
+AVXFLAGS           = -mavx -ffast-math #-fprofile-generate -fprofile-use -fopt-info-vec-all
 # WIP optimized: AVXFLAGS	=	-mavx2 -mfma -march=native -falign-loops=32
 #AVXFLAGS = -mavx2 -mfma -march=native -falign-loops=32 -falign-functions=32
 CXXFLAGS          += -Wall 

@@ -6,9 +6,6 @@
 #include <hpc_helpers.hpp>
 #include <avx_mathfun.h>
 
-
-//#include <immintrin.h>
-
 void softmax_avx(const float *input, float *output, size_t K) {
 
 	// Find the maximum to stabilize the computation of the exponential
@@ -137,90 +134,6 @@ void softmax_avx_optimized(const float* __restrict input, float* __restrict outp
         output[i] /= sum;
 }
 
-// Another optimization that include the use of FMA to calculate the exponential
-void softmax_avx_fma(const float* __restrict input, float* __restrict output, size_t K) {
-    if (K == 0) return;
-    
-    constexpr size_t VEC_SIZE = 8; // 8 floats per AVX vector
-    
-    // Stage 1: Find maximum value (vectorized)
-    float max_val = -std::numeric_limits<float>::infinity();
-    __m256 max_v = _mm256_set1_ps(max_val);
-    size_t i = 0;
-
-    // Vectorized max with unaligned loads
-    for (; i + VEC_SIZE <= K; i += VEC_SIZE) {
-        __m256 data = _mm256_loadu_ps(input + i);
-        max_v = _mm256_max_ps(max_v, data);
-    }
-
-    // Horizontal reduction for max
-    alignas(32) float max_buf[VEC_SIZE];
-    _mm256_store_ps(max_buf, max_v);
-    for (size_t j = 0; j < VEC_SIZE; j++)
-        max_val = std::max(max_val, max_buf[j]);
-
-    // Scalar remainder
-    for (; i < K; i++)
-        max_val = std::max(max_val, input[i]);
-
-    // Stage 2: Compute exponentials (vectorized)
-    __m256 max_vec = _mm256_set1_ps(max_val);
-    i = 0;
-    for (; i + VEC_SIZE <= K; i += VEC_SIZE) {
-        __m256 data = _mm256_loadu_ps(input + i);
-        __m256 shifted = _mm256_sub_ps(data, max_vec);
-        __m256 exp = exp256_ps(shifted);
-        _mm256_storeu_ps(output + i, exp);
-    }
-
-    // Scalar remainder
-    for (; i < K; i++)
-        output[i] = expf(input[i] - max_val);
-
-    // Stage 3: Sum exponentials (vectorized)
-    float sum = 0.0f;
-    __m256 sum_v = _mm256_setzero_ps();
-    i = 0;
-    for (; i + VEC_SIZE <= K; i += VEC_SIZE) {
-        __m256 data = _mm256_loadu_ps(output + i);
-        sum_v = _mm256_add_ps(sum_v, data);
-    }
-
-    // Horizontal reduction for sum
-    alignas(32) float sum_buf[VEC_SIZE];
-    _mm256_store_ps(sum_buf, sum_v);
-    for (size_t j = 0; j < VEC_SIZE; j++)
-        sum += sum_buf[j];
-
-    // Scalar remainder
-    for (; i < K; i++)
-        sum += output[i];
-
-    // Stage 4: FMA-accelerated normalization
-    const __m256 sum_vec = _mm256_set1_ps(sum);
-    
-    // Fast reciprocal using FMA-based Newton-Raphson
-    // inv_sum ≈ 1/sum with 1 Newton iteration:
-    // inv_sum = inv_sum * (2 - sum * inv_sum)
-    __m256 inv_sum = _mm256_rcp_ps(sum_vec);    // Approximate reciprocal
-    inv_sum = _mm256_fnmadd_ps(sum_vec, inv_sum, _mm256_set1_ps(2.0f)); // 2 - sum*inv_sum
-    inv_sum = _mm256_mul_ps(inv_sum, _mm256_rcp_ps(sum_vec));  // inv_sum * (2 - sum*inv_sum)
-
-    i = 0;
-    for (; i + VEC_SIZE <= K; i += VEC_SIZE) {
-        __m256 data = _mm256_loadu_ps(output + i);
-        // FMA not used directly here, but reciprocal computation uses FMA
-        data = _mm256_mul_ps(data, inv_sum);
-        _mm256_storeu_ps(output + i, data);
-    }
-
-    // Scalar remainder
-    const float inv_sum_scalar = 1.0f / sum;  // Regular division for remainder
-    for (; i < K; i++)
-        output[i] *= inv_sum_scalar;
-}
-
 void printResult(std::vector<float> &v, size_t K) {
 	for(size_t i=0; i<K; ++i) {
 		std::fprintf(stderr, "%f\n",v[i]);
@@ -261,7 +174,6 @@ int main(int argc, char *argv[]) {
 	
 	TIMERSTART(softime_avx);
 	if (optimized) {
-		//softmax_avx(input.data(), output.data(), K);
 		printf("Optimized version avx\n");
 		softmax_avx_optimized(input_aligned, output_aligned, K);
 	} else {
