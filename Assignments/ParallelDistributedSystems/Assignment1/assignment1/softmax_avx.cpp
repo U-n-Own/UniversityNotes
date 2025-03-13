@@ -85,69 +85,6 @@ void softmax_avx(const float *input, float *output, size_t K) {
 
 }
 
-
-void softmax_avx_op2(const float *input, float *output, size_t K) {
-
-    size_t vec_size = K / 8 * 8;  // Process only multiples of 8 using vectorization
-    __m256 max_val_vec = _mm256_set1_ps(-INFINITY);
-    
-    // Find the maximum value in blocks of 8
-    for (size_t i = 0; i < vec_size; i += 8) {
-        __m256 in_vec = _mm256_loadu_ps(&input[i]);
-        max_val_vec = _mm256_max_ps(max_val_vec, in_vec);
-    }
-
-    // Reduce the maximum value to a single scalar
-    float max_val[8];
-    _mm256_storeu_ps(max_val, max_val_vec);
-    float final_max = *std::max_element(max_val, max_val + 8);
-
-    // Process remaining elements sequentially
-    for (size_t i = vec_size; i < K; i++) {
-        final_max = std::max(final_max, input[i]);
-    }
-
-    __m256 final_max_vec = _mm256_set1_ps(final_max);
-    __m256 sum_vec = _mm256_setzero_ps();
-
-    // Compute exp(x - max) in blocks of 8
-    for (size_t i = 0; i < vec_size; i += 8) {
-        __m256 in_vec = _mm256_loadu_ps(&input[i]);
-        __m256 exp_vec = exp256_ps(_mm256_sub_ps(in_vec, final_max_vec));
-        _mm256_storeu_ps(&output[i], exp_vec);
-        sum_vec = _mm256_add_ps(sum_vec, exp_vec);
-    }
-
-    // Reduce the sum to a single scalar
-    float sum[8];
-    _mm256_storeu_ps(sum, sum_vec);
-    float final_sum = 0.0f;
-    for (int i = 0; i < 8; ++i) {
-        final_sum += sum[i];
-    }
-
-    // Compute exp(x - max) sequentially for remaining elements
-    for (size_t i = vec_size; i < K; i++) {
-        output[i] = std::exp(input[i] - final_max);
-        final_sum += output[i];
-    }
-
-    __m256 final_sum_vec = _mm256_set1_ps(final_sum);
-
-    // Normalize the values in blocks of 8
-    for (size_t i = 0; i < vec_size; i += 8) {
-        __m256 out_vec = _mm256_loadu_ps(&output[i]);
-        out_vec = _mm256_div_ps(out_vec, final_sum_vec);
-        _mm256_storeu_ps(&output[i], out_vec);
-    }
-
-    // Normalize remaining elements sequentially
-    for (size_t i = vec_size; i < K; i++) {
-        output[i] /= final_sum;
-    }
-}
-
-
 void printResult(std::vector<float> &v, size_t K) {
 	for(size_t i=0; i<K; ++i) {
 		std::fprintf(stderr, "%f\n",v[i]);
