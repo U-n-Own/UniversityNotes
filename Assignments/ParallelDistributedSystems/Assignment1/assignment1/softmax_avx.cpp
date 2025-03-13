@@ -168,14 +168,20 @@ std::vector<float> generate_random_input(size_t K, float min = -1.0f, float max 
 
 int main(int argc, char *argv[]) {
 	if (argc == 1) {
-		std::printf("use: %s K [print] [optimized]\n", argv[0]);
+		std::printf("use: %s K [1]\n", argv[0]);
 		return 0;		
 	}
-	size_t K = std::stol(argv[1]);
-	bool print = (argc >= 3) ? std::string(argv[2]) == "true" : false;
-
-	std::vector<float> input = generate_random_input(K);
+	size_t K=0;
+	if (argc >= 2) {
+		K = std::stol(argv[1]);
+	}
+	bool print=false;
+	if (argc == 3) {
+		print=true;
+	}	
+	std::vector<float> input=generate_random_input(K);
 	std::vector<float> output(K);
+
 
 	TIMERSTART(softime_avx);
 		softmax_avx(input.data(), output.data(), K);
